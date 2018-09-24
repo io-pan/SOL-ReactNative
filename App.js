@@ -9,6 +9,7 @@ import {
 import Orientation from 'react-native-orientation';
 import KeepScreenOn from 'react-native-keep-screen-on';
 import SplashScreen from "rn-splash-screen";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 import RNFetchBlob from 'rn-fetch-blob'
@@ -43,7 +44,14 @@ export default class SOL extends Component {
 
    return (
      <View style ={styles.container}>
-
+<Text>
+          <MaterialCommunityIcons 
+              name="arrow-expand-up"
+              size={16}
+              borderRadius={0}
+              color={'#aa0000'}
+            /> B
+            </Text>
      </View>
      
       // <MOTION 
