@@ -20,6 +20,17 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+
+
+  componentWillMount() {  
+    this.hideSplash();
+  }
+
+  hideSplash(){
+    SplashScreen.hide();
+  }
+
+
   render() {
     return (
       <View style={styles.container}>
