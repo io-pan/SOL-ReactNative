@@ -21,6 +21,12 @@ buildscript {
 }
 
 allprojects {
+    // for react-native-device-info ... or below
+    // configurations.all {
+    //     resolutionStrategy.force "com.android.support:support-v4:26.1.0"
+    // }
+    // end for react-native-device-info
+
     repositories {
         mavenLocal()
         jcenter()
@@ -34,7 +40,16 @@ allprojects {
 
 subprojects {
   project.configurations.all {
-      afterEvaluate {project ->
+    // for react-native-device-info 
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'com.android.support'
+                && !details.requested.name.contains('multidex') ) {
+            details.useVersion "26.1.0"
+        }
+    }
+    // end for react-native-device-info
+
+    afterEvaluate {project ->
         if (project.hasProperty("android")) {
             android {
                 compileSdkVersion 26

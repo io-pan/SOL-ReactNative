@@ -470,7 +470,7 @@ export default class MotionManager extends Component {
     }
     delete this.toBeSent.photos;
 
-    this.toBeSent.lang = strings.getLanguage();
+    this.toBeSent.lang = strings.getInterfaceLanguage();
     this.refs.scene.postMessage(JSON.stringify(this.toBeSent));
   }
 

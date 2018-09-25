@@ -15,13 +15,15 @@ import RNFetchBlob from 'rn-fetch-blob'
 import { RNCamera } from 'react-native-camera';
 import LocalizedStrings from 'react-native-localization';
 import RNExitApp from 'react-native-exit-app';
+import DeviceInfo from 'react-native-device-info';
+import DatePicker from 'react-native-datepicker';
 
 const strings = new LocalizedStrings({
   'en':{
-    lang:'EN',
+    languag:'EN',
   },
   'fr':{
-    lang:'FR',
+    languag:'FR',
   },
 });
 
@@ -48,6 +50,7 @@ export default class SOL extends Component {
     this.hideSplash();
 
     strings.setLanguage('en');
+    strings.setLanguage(strings.getInterfaceLanguage());
   }
 
   hideSplash(){
@@ -63,15 +66,32 @@ export default class SOL extends Component {
     return (
       <View style ={styles.container}>
         <RNCamera
-            ref={ref => {
-              this.camera = ref;
-            }}
-            style = {styles.preview}
-            type={RNCamera.Constants.Type.back}
-            flashMode={RNCamera.Constants.FlashMode.off}
-            permissionDialogTitle={'Permission to use camera'}
-            permissionDialogMessage={'We need your permission to use your camera phone'}
-        />
+          ref={ref => {
+            this.camera = ref;
+          }}
+          style = {styles.preview}
+          type={RNCamera.Constants.Type.back}
+          flashMode={RNCamera.Constants.FlashMode.off}
+          permissionDialogTitle={'Title Permission to use camera'}
+          permissionDialogMessage={'MSG We need your permission to use your camera phone'}
+          > 
+            {({ camera, status }) => {  // 'READY' | 'PENDING_AUTHORIZATION' | 'NOT_AUTHORIZED'
+              if (status == 'NOT_AUTHORIZED') return  <Text> NOT_AUTHORIZED </Text>;
+              if (status == 'PENDING_AUTHORIZATION') return  <Text> Wait cam </Text>;
+              return (
+                <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+                  <TouchableOpacity onPress={() => this.takePicture(camera)} style={styles.capture}>
+                    <Text style={{ fontSize: 14 }}> SNAP </Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}     
+          </RNCamera>
+
+          <DatePicker
+              mode="datetime"
+              format="DD/MM HH:mm"
+            />
 
         <Text>
             <MaterialCommunityIcons 
@@ -80,18 +100,19 @@ export default class SOL extends Component {
                 borderRadius={0}
                 color={'#aa0000'}
               />
-              ********** { strings.lang } **********
+              ********** { strings.languag } ** { DeviceInfo.getApplicationName() } ********
         </Text>
 
-
+        {/*
         <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center',}}>
         <TouchableOpacity
             onPress={this.takePicture.bind(this)}
             style = {styles.capture}
         >
-            <Text style={{fontSize: 14}}> SNAP </Text>
+            <Text style={{fontSize: 14}}> SNAP2 </Text>
         </TouchableOpacity>
         </View>
+        */}
       </View>
 
     );
@@ -125,6 +146,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black'
   },
   preview: {
+    justifyContent: 'flex-end',
     position: 'absolute',
     left:0,top:0,right:0,bottom:0,
 
