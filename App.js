@@ -3,7 +3,7 @@ import {
   AppRegistry,
   StatusBar,
   BackHandler,
-
+  DeviceEventEmitter,
   TouchableOpacity, View, Text, StyleSheet,
 } from 'react-native';
 
@@ -17,6 +17,7 @@ import LocalizedStrings from 'react-native-localization';
 import RNExitApp from 'react-native-exit-app';
 import DeviceInfo from 'react-native-device-info';
 import DatePicker from 'react-native-datepicker';
+import { SensorManager } from 'NativeModules';
 
 const strings = new LocalizedStrings({
   'en':{
@@ -51,6 +52,28 @@ export default class SOL extends Component {
 
     strings.setLanguage('en');
     strings.setLanguage(strings.getInterfaceLanguage());
+
+    SensorManager.startOrientation(100);
+    DeviceEventEmitter.addListener('Orientation', (data)=> {
+      if (!this.waitOrientation) {
+        this.waitOrientation = true;
+        console.log(Math.round(data.azimuth, 10));
+      }
+    });
+
+    var scope= this;
+    this._interval = setInterval(function(){
+      scope.waitOrientation = false;
+    }, 100);
+  }
+
+
+
+
+  componentWillUnmount() {
+    clearInterval(this._interval);
+    SensorManager.stopOrientation();
+    DeviceEventEmitter.removeListener('Orientation');
   }
 
   hideSplash(){
