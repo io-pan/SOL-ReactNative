@@ -10,6 +10,7 @@
     "@babel/runtime": "^7.0.0",
     "react": "16.5.0",
     "react-native": "0.57.1",
+    "react-native-android-location-services-dialog-box": "^2.7.0",
     "react-native-camera": "^1.2.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-device-info": "^0.22.5",

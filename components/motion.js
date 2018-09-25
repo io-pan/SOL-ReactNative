@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {
-	AppRegistry,
-	StyleSheet,
-	Text,
-	Alert,
-	View,
+  AppRegistry,
+  StyleSheet,
+  Text,
+  Alert,
+  View,
   ScrollView,
-	Dimensions,
+  Dimensions,
   WebView,
   TouchableHighlight,
   BackHandler,
@@ -16,14 +16,14 @@ import {
 
 import RNExitApp from 'react-native-exit-app';
 import LocalizedStrings from 'react-native-localization';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import { SensorManager } from 'NativeModules';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// import CONTROLS from './controls';
-// import LOCATIONS from './location';
+import CONTROLS from './controls';
+import LOCATIONS from './location';
 import CAM from './cam';
-// import INFOS from './infos';
+import INFOS from './infos';
 
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 let source;
@@ -62,6 +62,85 @@ const deviceWidth  = Dimensions.get('window').width,
         },
       });
 
+//-------------------------------------------------
+//  Outputs device orientation (target)
+//-------------------------------------------------
+class DeviceOrientationTextView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible:false,//visible={this.state.targetOn && this.state.view!='orbit'}
+      orientation:{
+        lat:0,
+        lon:0,
+        roll:0
+      },
+    }
+  }
+
+  setVisible(visible){
+    this.setState({
+      visible:visible, 
+    });
+  }
+
+  setOrientation(orientation) {
+    this.setState(
+      { orientation:orientation }
+    );
+  }
+
+  getRoll(){
+    if (typeof this.state.orientation.roll !== "undefined") {
+      return this.state.orientation.roll;
+    }
+    return 0;
+  }
+  
+  render() {
+    if (!this.state.visible) {
+      return null;
+    }
+    return (
+
+      <View 
+        pointerEvents = 'none'
+        style={[
+          styles.targetContainer,
+          { transform: [{ rotate: this.getRoll()+'deg'}] }
+        ]} 
+      >
+        <View style={styles.target_h}  ></View>
+        <View style={styles.target_v}  ></View>
+
+        <View >
+          <Text style={[styles.target_text, styles.target_text_elevation]}>
+            <MaterialCommunityIcons 
+              name="arrow-expand-up"
+              size={16}
+              borderRadius={0}
+              color={'#aa0000'}
+            />&#160;
+            { this.state.orientation ? this.state.orientation.lat : '' }°
+          </Text>
+
+          <Text style={[styles.target_text, styles.target_text_azimuth]}>
+            &#160;&#160;
+            <MaterialCommunityIcons 
+              name="compass-outline"
+              size={16}
+              borderRadius={0}
+              color={'#aa0000'}
+            />&#160;
+            { this.state.orientation ? this.state.orientation.lon : '' }°
+            {/* roll:  { this.state.orientation ? this.state.orientation.roll : '' }*/}
+          </Text>
+        </View>
+
+      </View>
+    );
+  }
+}
 
 //-------------------------------------------------
 //  Exit app confirmation modal
@@ -120,7 +199,210 @@ class ExitModal extends Component {
   }
 }
 
+//-------------------------------------------------
+// Warn geolocation failed.
+//-------------------------------------------------
+class GeolocErrorModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open:false,
+    }
+  }
 
+  show(){
+    this.setState({open: true});
+  }
+
+  hide() {
+    this.setState({open: false});
+  }
+
+  render() {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.state.open}
+        onRequestClose={() => { this.setState({open: false}); }}
+        >
+        <View style = { styles.exitModal}>
+        
+            <Text style={styles.exitModalTitle}>
+              {strings.gps_error_title}
+            </Text>
+            <Text style={styles.exitModalText}>
+              {strings.gps_error}
+            </Text>
+
+            <View style={styles.exitModalButtonContainer}>
+              <TouchableHighlight
+                onPress={() => { this.hide() }}
+                style = {styles.exitModalButton}
+              >
+                <Text style={styles.exitModalTitle}>{strings.close}</Text>
+              </TouchableHighlight>
+            </View>
+
+          </View>
+      </Modal>
+    );
+  }
+}
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+
+export default class MotionManager extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+
+    this.webViewBridgeReady = false;
+    this.curLoc = {};
+    this.initialAzimuth = false;
+    this.toBeSent = {};
+    this.waitOrientation = false;
+  }
+
+  backButton = () => {
+    if (this.refs.LOCATIONS && this.refs.LOCATIONS.state && this.refs.LOCATIONS.state.visible) {
+      this.refs.LOCATIONS.setVisible(false);
+      return true;
+    }
+    else if (this.refs.INFOS && this.refs.INFOS.state && this.refs.INFOS.state.visible){
+      this.refs.INFOS.setVisible(false);
+      return true;
+    }
+    else {
+      this.refs.EXITMODAL.show();
+      return true;
+    }
+  }
+
+  // Webwiew sometimes does not provide true heading so catch it from native component.
+  resetAzimuth() {
+    this.refs.scene.postMessage(JSON.stringify({'azimuthReset':this.initialAzimuth}));
+    /*
+    this.initialAzimuth = false;
+    var scope = this;
+  
+    SensorManager.startOrientation(100);
+    DeviceEventEmitter.addListener('Orientation', (data)=> {
+      
+      if (this.initialAzimuth === false) {
+        this.initialAzimuth = 'first';
+        // Getting only the very first returned data gives an inaccurate value so get it for a while sec.
+        setTimeout(function() {
+          SensorManager.stopOrientation();
+          DeviceEventEmitter.removeListener('Orientation');
+          scope.initialAzimuth = Math.round(data.azimuth, 10);
+          scope.refs.scene.postMessage(JSON.stringify({'azimuthReset':scope.initialAzimuth}));  
+        }, 1000); 
+      }
+    });
+    */
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.backButton);
+
+    SensorManager.startOrientation(100);
+    DeviceEventEmitter.addListener('Orientation', (data)=> {
+      if (!this.waitOrientation) {
+        this.waitOrientation = true;
+        this.initialAzimuth = Math.round(data.azimuth, 10);
+      }
+    });
+
+    var scope= this;
+    this._interval = setInterval(function(){
+      scope.waitOrientation = false;
+    }, 100);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._interval);
+    SensorManager.stopOrientation();
+    DeviceEventEmitter.removeListener('Orientation');
+  }
+
+  // Controls actions
+  controlUpdated = (key, value) => {
+    // console.log(key+' '+value);
+    if(typeof key == "undefined" || key==''){
+      return;
+    }
+
+    if(key=='target'){
+      this.refs.deviceOrientation.setVisible(value);
+    }
+    else if(key=='takePicture'){
+      // console.log(this.refs.deviceOrientation.state.orientation);
+      this.refs.cam.takePicture( value, this.refs.deviceOrientation.state.orientation);
+    }
+    else if(key=='addLocation'){
+      this.refs.LOCATIONS._onAddLoc();
+    }
+    else if(key=='geoloc'){
+      this.refs.LOCATIONS.getLoc();
+    }
+    else if(key=='azimuthReset'){
+      this.resetAzimuth();
+    }
+    else if(key=='showInfos'){
+      this.refs.INFOS.setVisible();
+    }
+
+    else {
+      
+      if(key=='view' && value=='gyroscope'){
+        this.refs.scene.postMessage( JSON.stringify({ 
+          [key]:value ,
+          'azimuthReset':this.initialAzimuth
+        }));
+      }
+      else {
+        this.refs.scene.postMessage( JSON.stringify({ [key]:value }));
+      }
+    }
+
+  }
+
+  onToggleLocationList = (visible) => {
+    this.refs.LOCATIONS.setVisible(visible);
+  }
+  onEditLocation = (id) => {
+    this.refs.LOCATIONS._onEditItem(id);
+  }
+  onSearchLocation = () => {
+    this.refs.LOCATIONS.onSearchPress();
+  }
+
+  gotNewLoc = (place) => {
+    this.refs.CONTROLS.refs.toolBar.gpsSearching = false;
+    this.refs.CONTROLS.refs.toolBar.setLocationId(place.id);
+
+    if (place){
+      this.curLoc = place;
+      this.refs['CONTROLS'].gotNewLoc(place);
+
+      if (this.webViewBridgeReady) {
+        this.refs.scene.postMessage( JSON.stringify({ loc:place }));
+        if (place.id != -1) {
+          this.sendPhotosToBridge();
+        }
+      }
+      else {
+        this.toBeSent.loc = place;
+        this.toBeSent.photos = true;
+      }
+
+    }
+    else {
+      this.refs.GEOLOCERRORMODAL.show();
+    }
+  }
 
   getFOVCallback = (angle) => {
     var d = new Date(),
@@ -188,7 +470,7 @@ class ExitModal extends Component {
     }
     delete this.toBeSent.photos;
 
-    this.toBeSent.lang = strings.getInterfaceLanguage();
+    this.toBeSent.lang = strings.getLanguage();
     this.refs.scene.postMessage(JSON.stringify(this.toBeSent));
   }
 
@@ -228,19 +510,48 @@ class ExitModal extends Component {
     }
   }
 
-	render () {
-		return (
-			<View style={styles.container}>
+  render () {
+    return (
+      <View style={styles.container}>
         <CAM ref='cam'
           FOV = {false}
           getFOVCallback = { this.getFOVCallback }
           getNewPhoto = { this.getNewPhoto }
         />
-    
+        <WebView   
+          ref = "scene"
+          mixedContentMode = 'always'
+          style = { styles.w_webView }
+          source = {source}
+          onMessage={(event)=> this.onMessage(event.nativeEvent.data)}
+        />
 
-			</View>
-		)
-	}
+        <DeviceOrientationTextView ref="deviceOrientation"/>
+
+        <CONTROLS
+          ref="CONTROLS"
+          controlUpdated={this.controlUpdated}
+          onToggleLocationList = { this.onToggleLocationList }
+          onEditLocation = { this.onEditLocation }
+          onSearchLocation = { this.onSearchLocation }
+          onBackButton = { this.backButton }
+        />
+  
+        <LOCATIONS
+          ref = "LOCATIONS"
+          curLoc = {false}
+          visible = {false}
+          gotNewLoc = { this.gotNewLoc }
+        />
+        
+        <INFOS ref="INFOS"/>
+
+        <ExitModal ref="EXITMODAL"/>
+        <GeolocErrorModal ref="GEOLOCERRORMODAL"/>
+
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({ 
