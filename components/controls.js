@@ -145,10 +145,11 @@ class ToolBar extends Component {
 
 
   componentDidMount() {
-    NetInfo.isConnected.addEventListener(
-        'change',
-        this._handleConnectivityChange
+    NetInfo.addEventListener(
+      'connectionChange',
+      this._handleConnectivityChange
     );
+
     NetInfo.isConnected.fetch().done(
         (isConnected) => { this.setState({'connected':isConnected}); }
     );

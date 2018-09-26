@@ -20,9 +20,9 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView from 'react-native-maps';
-import Geocoder from 'react-native-geocoder';
+// import Geocoder from 'react-native-geocoder';
 import DeviceInfo from 'react-native-device-info';
-import RNFetchBlob from 'react-native-fetch-blob'
+import RNFetchBlob from 'rn-fetch-blob'
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 import LocalizedStrings from 'react-native-localization';
 
@@ -132,54 +132,54 @@ class LocationEdit extends Component {
   }
 
   onRegionText(text) {
-    if (text) {
-      this.geocodeAddressPromise = this.makeCancelable(Geocoder.geocodeAddress(text));
-      this.geocodeAddressPromise
-        .promise
-        .then((val) =>  {
-          if (val.length) {
-            this.setState({ 
-              name: val[0].formattedAddress,
-              lat: val[0].position.lat,
-              lon: val[0].position.lng,
-            })
+    // if (text) {
+    //   this.geocodeAddressPromise = this.makeCancelable(Geocoder.geocodeAddress(text));
+    //   this.geocodeAddressPromise
+    //     .promise
+    //     .then((val) =>  {
+    //       if (val.length) {
+    //         this.setState({ 
+    //           name: val[0].formattedAddress,
+    //           lat: val[0].position.lat,
+    //           lon: val[0].position.lng,
+    //         })
 
-            // Get timezone
-            var summerDate = new Date();
-            summerDate.setFullYear(summerDate.getFullYear()-1);
-            summerDate.setMonth(6);
-            summerDate = summerDate.getTime()/1000;
+    //         // Get timezone
+    //         var summerDate = new Date();
+    //         summerDate.setFullYear(summerDate.getFullYear()-1);
+    //         summerDate.setMonth(6);
+    //         summerDate = summerDate.getTime()/1000;
 
-            fetch('https://maps.googleapis.com/maps/api/timezone/json?location='+val[0].position.lat+','+val[0].position.lng+'&timestamp='+summerDate+'&key='+GOOGLE_APIKEY)
-            .then((response) => response.json())
-            .then((responseJson) => {
-              if(responseJson.status=="OK") {
-                this.setState({ 
-                  gmt: responseJson.rawOffset,
-                  dst: responseJson.dstOffset,
-                });
-              }
-              else {
-                this.setState({ 
-                  gmt: 0,
-                  dst: 0,
-                });
-              }
-            })
-            .catch((error) => { }); 
-          }
-          else {
-            this.setState({ 
-              name: 'lieu inconnu.',
-              lat: 0,
-              lon: 0,
-              gmt: 0,
-              dst: 0,
-            })
-          }
-        })
-        /*.catch((reason) => console.log('isCanceled', reason))*/;
-    }
+    //         fetch('https://maps.googleapis.com/maps/api/timezone/json?location='+val[0].position.lat+','+val[0].position.lng+'&timestamp='+summerDate+'&key='+GOOGLE_APIKEY)
+    //         .then((response) => response.json())
+    //         .then((responseJson) => {
+    //           if(responseJson.status=="OK") {
+    //             this.setState({ 
+    //               gmt: responseJson.rawOffset,
+    //               dst: responseJson.dstOffset,
+    //             });
+    //           }
+    //           else {
+    //             this.setState({ 
+    //               gmt: 0,
+    //               dst: 0,
+    //             });
+    //           }
+    //         })
+    //         .catch((error) => { }); 
+    //       }
+    //       else {
+    //         this.setState({ 
+    //           name: 'lieu inconnu.',
+    //           lat: 0,
+    //           lon: 0,
+    //           gmt: 0,
+    //           dst: 0,
+    //         })
+    //       }
+    //     })
+    //     /*.catch((reason) => console.log('isCanceled', reason))*/;
+    // }
   }
 
   onRegionChange(region) {
@@ -201,13 +201,13 @@ class LocationEdit extends Component {
 
     if (this.props.location.id < 0) {
       // Get place name
-      Geocoder.geocodePosition({lat: region.latitude, lng: region.longitude})
-      .then(res => {
-        this.setState({ 
-          name: res[0].locality,
-        });
-      })
-      .catch((error) => {  });
+      // Geocoder.geocodePosition({lat: region.latitude, lng: region.longitude})
+      // .then(res => {
+      //   this.setState({ 
+      //     name: res[0].locality,
+      //   });
+      // })
+      // .catch((error) => {  });
 
       // Get timezone
       var summerDate = new Date();
@@ -827,24 +827,24 @@ export default class GeolocationManager extends Component {
 
             if (this.state.connected ) {
               // Get location name
-              Geocoder.geocodePosition({
-                lat: this.state.lat,
-                lng: this.state.lon,
-              })
-              .then(res => {
-                this.setState({ name: res[0].locality }, function() {
-                  this.forwardSelectedLocation({
-                    id:-1,
-                    name:this.state.name,
-                    lat: this.state.lat,
-                    lon: this.state.lon,
-                    gmt: this.state.gmt,
-                    dst: this.state.dst,
-                  });  
-                });
+              // Geocoder.geocodePosition({
+              //   lat: this.state.lat,
+              //   lng: this.state.lon,
+              // })
+              // .then(res => {
+              //   this.setState({ name: res[0].locality }, function() {
+              //     this.forwardSelectedLocation({
+              //       id:-1,
+              //       name:this.state.name,
+              //       lat: this.state.lat,
+              //       lon: this.state.lon,
+              //       gmt: this.state.gmt,
+              //       dst: this.state.dst,
+              //     });  
+              //   });
 
-              })
-              .catch(err => console.log(err));
+              // })
+              // .catch(err => console.log(err));
             }
             else {
               this.setState({
@@ -1001,6 +1001,15 @@ export default class GeolocationManager extends Component {
       });
     }
 
+    NetInfo.addEventListener(
+      'connectionChange',
+      this._handleConnectivityChange
+    );
+
+    NetInfo.isConnected.fetch().done(
+        (isConnected) => { this.setState({'connected':isConnected}); }
+    );
+    
     NetInfo.isConnected.addEventListener(
         'change',
         this._handleConnectivityChange

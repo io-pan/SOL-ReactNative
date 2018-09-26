@@ -36,17 +36,17 @@ export default class Cam extends React.Component {
 
     this.camera = null;
     this.state = {
-      camera: {
-        aspect: Camera.constants.Aspect.cover,
-        captureTarget: Camera.constants.CaptureTarget.temp,
-          // temp:        file:///data/user/0/com.sol/cache
-          // disk:        file:///storage/emulated/0/Pictures
-          // cameraRoll : file:///storage/emulated/0/DCIM/
-        captureQuality: Camera.constants.CaptureQuality.preview,
-        type: Camera.constants.Type.back,
-        orientation: Camera.constants.Orientation.portrait,
-        flashMode: Camera.constants.FlashMode.off,
-      },
+      // camera: {
+      //   aspect: Camera.constants.Aspect.cover,
+      //   captureTarget: Camera.constants.CaptureTarget.temp,
+      //     // temp:        file:///data/user/0/com.sol/cache
+      //     // disk:        file:///storage/emulated/0/Pictures
+      //     // cameraRoll : file:///storage/emulated/0/DCIM/
+      //   captureQuality: Camera.constants.CaptureQuality.preview,
+      //   type: Camera.constants.Type.back,
+      //   orientation: Camera.constants.Orientation.portrait,
+      //   flashMode: Camera.constants.FlashMode.off,
+      // },
       FOV: this.props.FOV,
     };
   }
@@ -109,15 +109,16 @@ export default class Cam extends React.Component {
   }
 
   getFOV() {
-    this.camera.getFOV()
-    .then(res => {
-      // console.log('getFOV');
-      this.props.getFOVCallback( res[Camera.constants.Type.back] );
-    })
-    .catch(err =>  {
-      // Cam not yet initialised, try again.
-      this.getFOV();
-    });
+    this.props.getFOVCallback('68');
+    // this.camera.getFOV()
+    // .then(res => {
+    //   // console.log('getFOV');
+    //   this.props.getFOVCallback( res[Camera.constants.Type.back] );
+    // })
+    // .catch(err =>  {
+    //   // Cam not yet initialised, try again.
+    //   this.getFOV();
+    // });
   };
 
   render() {
