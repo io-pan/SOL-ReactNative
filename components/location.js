@@ -1009,19 +1009,12 @@ export default class GeolocationManager extends Component {
     NetInfo.isConnected.fetch().done(
         (isConnected) => { this.setState({'connected':isConnected}); }
     );
-    
-    NetInfo.isConnected.addEventListener(
-        'change',
-        this._handleConnectivityChange
-    );
-    NetInfo.isConnected.fetch().done(
-        (isConnected) => { this.setState({'connected':isConnected}); }
-    );
+
   }
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener(
-        'change',
+    NetInfo.removeEventListener(
+        'connectionChange',
         this._handleConnectivityChange
     );
   }

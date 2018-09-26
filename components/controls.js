@@ -155,8 +155,8 @@ class ToolBar extends Component {
     );
   }
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener(
-        'change',
+    NetInfo.removeEventListener(
+        'connectionChange',
         this._handleConnectivityChange
     );
   }
