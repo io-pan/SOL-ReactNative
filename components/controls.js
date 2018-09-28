@@ -1245,7 +1245,7 @@ class DateTimeSliders extends Component {
         <View style={styles.flex1Row}>
           <Slider
             ref="sliderDays"
-            style={styles.flex05} 
+            style={styles.AzimuthCorrectionSlider} 
             thumbTintColor= {colorLight} 
             minimumTrackTintColor={'grey'} maximumTrackTintColor={'grey'}
             minimumValue={1}
@@ -1265,7 +1265,7 @@ class DateTimeSliders extends Component {
         <View style={styles.flex1Row}>
           <Slider  
             ref="sliderHours"
-            style={styles.flex05}
+            style={styles.AzimuthCorrectionSlider}
             thumbTintColor={colorLight} minimumTrackTintColor={'grey'} maximumTrackTintColor={'grey'}
             maximumValue={24*60-1}
             step={1}

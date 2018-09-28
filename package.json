@@ -17,6 +17,7 @@
     "react-native-exit-app": "^1.0.0",
     "react-native-keep-screen-on": "^1.2.0",
     "react-native-localization": "^2.0.1",
+    "react-native-maps": "^0.21.0",
     "react-native-orientation": "^3.1.3",
     "react-native-sensor-manager": "^0.1.10",
     "react-native-vector-icons": "^5.0.0",

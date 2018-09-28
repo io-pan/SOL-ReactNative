@@ -9,11 +9,13 @@ buildscript {
         supportLibVersion = "27.1.1"
     }
     repositories {
+        mavenCentral()
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath 'com.google.gms:google-services:3.1.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,11 +23,9 @@ buildscript {
 }
 
 allprojects {
-    // for react-native-device-info ... or below
-    // configurations.all {
-    //     resolutionStrategy.force "com.android.support:support-v4:26.1.0"
-    // }
-    // end for react-native-device-info
+    configurations.all {
+        resolutionStrategy.force "com.android.support:support-v4:26.1.0"
+    }
 
     repositories {
         mavenLocal()
@@ -34,33 +34,9 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
+        //maven {
+        //    url 'https://maven.google.com'
+        //}
         google()
     }
-}
-
-subprojects {
-  project.configurations.all {
-    // for react-native-device-info 
-    resolutionStrategy.eachDependency { details ->
-        if (details.requested.group == 'com.android.support'
-                && !details.requested.name.contains('multidex') ) {
-            details.useVersion "26.1.0"
-        }
-    }
-    // end for react-native-device-info
-
-    afterEvaluate {project ->
-        if (project.hasProperty("android")) {
-            android {
-                compileSdkVersion 26
-                buildToolsVersion '26.0.2'
-            }
-        }
-    }
-  }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.4'
-    distributionUrl = distributionUrl.replace("bin", "all")
 }

@@ -3,6 +3,7 @@ package com.sol;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.showlocationservicesdialogbox.LocationServicesDialogBoxPackage;
 import com.sensormanager.SensorManagerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MapsPackage(),
             new LocationServicesDialogBoxPackage(),
             new SensorManagerPackage(),
             new RNDeviceInfo(),
