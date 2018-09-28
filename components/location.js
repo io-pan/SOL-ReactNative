@@ -35,7 +35,6 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView from 'react-native-maps';
-// import Geocoder from 'react-native-geocoder';
 import DeviceInfo from 'react-native-device-info';
 import RNFetchBlob from 'rn-fetch-blob'
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
@@ -87,6 +86,9 @@ const deviceWidth = Dimensions.get('window').width,
           cancel:'Cancel',
           save:'Save',
           select:'Select',
+
+          'currentplace': 'Current position',
+          'unknownplace': 'Unknown location',
         },
         'fr':{
           yes:'OUI',
@@ -108,6 +110,9 @@ const deviceWidth = Dimensions.get('window').width,
           cancel:'Annuler',
           save:'Enregistrer',
           select:'Sélectionner',
+
+          'currentplace': 'Position actuelle',
+          'unknownplace': 'Lieu inconnu',
         },
       });
 
@@ -147,63 +152,71 @@ class LocationEdit extends Component {
   }
 
   onRegionText(text) {
-    // if (text) {
-    //   this.geocodeAddressPromise = this.makeCancelable(Geocoder.geocodeAddress(text));
-    //   this.geocodeAddressPromise
-    //     .promise
-    //     .then((val) =>  {
-    //       if (val.length) {
-    //         this.setState({ 
-    //           name: val[0].formattedAddress,
-    //           lat: val[0].position.lat,
-    //           lon: val[0].position.lng,
-    //         })
+    if (text) {
+      fetch('https://maps.googleapis.com/maps/api/geocode/json'
+        +'?address='+text
+        +'&key='+GOOGLE_APIKEY)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson.status=="OK") {
+          // console.log(responseJson.results[0].geometry.location);
+          this.setState({ 
+            name: text,
+            lat: responseJson.results[0].geometry.location.lat,
+            lon: responseJson.results[0].geometry.location.lng,
+          })
 
-    //         // Get timezone
-    //         var summerDate = new Date();
-    //         summerDate.setFullYear(summerDate.getFullYear()-1);
-    //         summerDate.setMonth(6);
-    //         summerDate = summerDate.getTime()/1000;
-
-    //         fetch('https://maps.googleapis.com/maps/api/timezone/json?location='+val[0].position.lat+','+val[0].position.lng+'&timestamp='+summerDate+'&key='+GOOGLE_APIKEY)
-    //         .then((response) => response.json())
-    //         .then((responseJson) => {
-    //           if(responseJson.status=="OK") {
-    //             this.setState({ 
-    //               gmt: responseJson.rawOffset,
-    //               dst: responseJson.dstOffset,
-    //             });
-    //           }
-    //           else {
-    //             this.setState({ 
-    //               gmt: 0,
-    //               dst: 0,
-    //             });
-    //           }
-    //         })
-    //         .catch((error) => { }); 
-    //       }
-    //       else {
-    //         this.setState({ 
-    //           name: 'lieu inconnu.',
-    //           lat: 0,
-    //           lon: 0,
-    //           gmt: 0,
-    //           dst: 0,
-    //         })
-    //       }
-    //     })
-    //     /*.catch((reason) => console.log('isCanceled', reason))*/;
-    // }
+          // Get timezone
+          var summerDate = new Date();
+          summerDate.setFullYear(summerDate.getFullYear()-1);
+          summerDate.setMonth(6);
+          summerDate = summerDate.getTime()/1000;
+          fetch('https://maps.googleapis.com/maps/api/timezone/json'
+            +'?location='
+            +responseJson.results[0].geometry.location.lat+','
+            +responseJson.results[0].geometry.location.lng
+            +'&timestamp='+summerDate
+            +'&key='+GOOGLE_APIKEY)
+          .then((response) => response.json())
+          .then((responseJson) => {
+            if(responseJson.status=="OK") {
+              this.setState({ 
+                gmt: responseJson.rawOffset,
+                dst: responseJson.dstOffset,
+              });
+            }
+            else {
+              this.setState({ 
+                gmt: 0,
+                dst: 0,
+              });
+            }
+          })
+          .catch((error) => { }); 
+        }
+        else {
+          console.log('api geocode ERROR:');
+          console.log(responseJson);
+          this.setState({ 
+            name: strings.unknownplace,
+            lat: 0,
+            lon: 0,
+            gmt: 0,
+            dst: 0,
+          })
+        }
+      })
+      .catch((error) => { console.log(error);  }); 
+    }
   }
 
   onRegionChange(region) {
-    this.setState({ 
-      lat: region.latitude,
-      lon: region.longitude,
-      latitudeDelta: region.latitudeDelta,
-      longitudeDelta: region.longitudeDelta,
-    });
+    // this.setState({ 
+    //   lat: region.latitude,
+    //   lon: region.longitude,
+    //   latitudeDelta: region.latitudeDelta,
+    //   longitudeDelta: region.longitudeDelta,
+    // });
   }
 
   onRegionChangeComplete(region) {
@@ -216,13 +229,41 @@ class LocationEdit extends Component {
 
     if (this.props.location.id < 0) {
       // Get place name
-      // Geocoder.geocodePosition({lat: region.latitude, lng: region.longitude})
-      // .then(res => {
-      //   this.setState({ 
-      //     name: res[0].locality,
-      //   });
-      // })
-      // .catch((error) => {  });
+      fetch('https://maps.googleapis.com/maps/api/geocode/json?'
+          +'latlng=' + region.latitude + ',' + region.longitude
+          +'&location_type=ROOFTOP&result_type=street_address'
+          +'&key='+GOOGLE_APIKEY)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson.status=="OK") {
+          var storableLocation = {};
+          for (var ac = 0; ac < responseJson.results[0].address_components.length; ac++) {
+            var component = responseJson.results[0].address_components[ac];
+
+            switch(component.types[0]) {
+                case 'locality':
+                    storableLocation.city = component.long_name;
+                    break;
+                case 'administrative_area_level_1':
+                    storableLocation.state = component.short_name;
+                    break;
+                case 'country':
+                    storableLocation.country = component.long_name;
+                    break;
+            }
+          }
+          console.log('geo code');
+          console.log(responseJson.results[0]);
+          this.setState({ 
+            name: storableLocation.city +', '+ storableLocation.country,
+          });
+        }
+        else {
+          console.log('api geocode ERROR:');
+          console.log(responseJson);
+        }
+      })
+      .catch((error) => { console.log(error);  }); 
 
       // Get timezone
       var summerDate = new Date();
@@ -233,13 +274,13 @@ class LocationEdit extends Component {
       .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.status=="OK") {
-          this.setState({ 
+          this.setState({
             gmt: responseJson.rawOffset,
             dst: responseJson.dstOffset,
           });
         }
       })
-      .catch((error) => {}); 
+      .catch((error) => {});
     }
   }
 
@@ -422,10 +463,10 @@ class LocationEdit extends Component {
           {this._renderSearchButton()}
 
           <TextInput
-            underlineColorAndroid='transparent'
+            underlineColorAndroid = 'transparent'
             defaultValue = {this.props.location.name}
-            value= {this.state.name}
-            onChangeText={(text) => this.setState({name:text})}
+            value = {this.state.name}
+            onChangeText = {(text) => this.setState({name:text})}
             multiline = {true}
             numberOfLines = {2}
             style = {{ 
@@ -596,7 +637,7 @@ export default class GeolocationManager extends Component {
       sort: ['time',1],
       editModalOpen:false,
       searchModalOpen:false,
-      connected:true,
+      connected:false,
     };
     this.locList = [];
   }
@@ -824,12 +865,11 @@ export default class GeolocationManager extends Component {
     }
   }
 
-  geoLocConfirmed(){
-    if (!this.state.searching) {
-      this.setState({searching:true});
-      navigator.geolocation.getCurrentPosition (
-        (position) => {
-
+  geoLocConfirmed() {
+    this.watchID = navigator.geolocation.watchPosition(
+       (position) => {
+          console.log(position);
+          navigator.geolocation.clearWatch(this.watchID);
           this.setState({
             searching: false,
             lat: parseFloat(position.coords.latitude.toFixed(6)),
@@ -838,32 +878,54 @@ export default class GeolocationManager extends Component {
             selected: -1,
             gmt: DeviceInfo.UTC()/1000,
             dst: DeviceInfo.useDTS(),
-          }, function(){
-
-            if (this.state.connected ) {
+          }, function()   {
+            if (this.state.connected) {
               // Get location name
-              // Geocoder.geocodePosition({
-              //   lat: this.state.lat,
-              //   lng: this.state.lon,
-              // })
-              // .then(res => {
-              //   this.setState({ name: res[0].locality }, function() {
-              //     this.forwardSelectedLocation({
-              //       id:-1,
-              //       name:this.state.name,
-              //       lat: this.state.lat,
-              //       lon: this.state.lon,
-              //       gmt: this.state.gmt,
-              //       dst: this.state.dst,
-              //     });  
-              //   });
+              fetch('https://maps.googleapis.com/maps/api/geocode/json?'
+                  +'latlng=' + this.state.lat + ',' + this.state.lon
+                  +'&location_type=ROOFTOP&result_type=street_address'
+                  +'&key='+GOOGLE_APIKEY)
+              .then((response) => response.json())
+              .then((responseJson) => {
+                if(responseJson.status=="OK") {
+                  // console.log(responseJson.results);
+                  var storableLocation = {};
+                  for (var ac = 0; ac < responseJson.results[0].address_components.length; ac++) {
+                    var component = responseJson.results[0].address_components[ac];
 
-              // })
-              // .catch(err => console.log(err));
+                    switch(component.types[0]) {
+                        case 'locality':
+                            storableLocation.city = component.long_name;
+                            break;
+                        case 'administrative_area_level_1':
+                            storableLocation.state = component.short_name;
+                            break;
+                        case 'country':
+                            storableLocation.country = component.long_name;
+                            break;
+                  }
+                };
+                  this.setState({ name: storableLocation.city+', '+storableLocation.country }, function() {
+                    this.forwardSelectedLocation({
+                      id:-1,
+                      name:this.state.name,
+                      lat: this.state.lat,
+                      lon: this.state.lon,
+                      gmt: this.state.gmt,
+                      dst: this.state.dst,
+                    });  
+                  });
+                }
+                else {
+                  console.log('api geocode ERROR:');
+                  console.log(responseJson);
+                }
+              })
+              .catch((error) => { console.log(error);  }); 
             }
             else {
               this.setState({
-                name: 'Position actuelle',
+                name: strings.currentplace,
               }, function() {
                 this.forwardSelectedLocation({
                   id:-1,
@@ -878,12 +940,16 @@ export default class GeolocationManager extends Component {
           });
         },
         (error) => {
+
+          alert('geolocerror');
           this.setState({searching:0});
           this.forwardSelectedLocation(false);
-        },
-        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-      );
-    }
+        },{
+          enableHighAccuracy:true,
+          timeout:10000, 
+          // maximumAge:1
+        }
+    );
   }
 
   onLocChanged = (value) => {
@@ -1066,36 +1132,6 @@ export default class GeolocationManager extends Component {
     });
   }
 
-  _renderSearchButton() {
-    if (this.state.connected) {
-      return (
-        <View style={ this.state.searching ? styles.width0  : styles.flex05  }>
-          <Icon.Button   
-            name="search"
-            size={30}
-            onPress={ () => this.onSearchPress() }
-          >
-          </Icon.Button>
-        </View>
-      );
-    }
-    else {
-      return(
-        <View style={ this.state.searching ? styles.width0  : styles.flex1  }>
-          <Icon.Button   
-            name="search"
-            size={30}
-            backgroundColor='grey'
-          >
-            <Text style={{fontSize:20, flex:1, textAlign:'center', color:'white', padding:3,}}>
-            Pas de réseau
-            </Text>
-          </Icon.Button>
-        </View>
-      );
-    }
-  }
-
   _renderSearchResult() {
     if (this.state.selected < 0) {
       return (
@@ -1205,15 +1241,6 @@ export default class GeolocationManager extends Component {
       <View style={styles.mainContainer}>
         {this._renderList()}
         {this._renderEditModal()}
-        {/*
-        <GeoLocErrorModal
-          ref = 'GeoLocErrorModal'
-          // this.refs['sliderDays'].setNativeProps({ value: d0.getDOY() });
-          // this.refs.scene.sendToBridge( JSON.stringify( {'sliderTime':d0.getTime()} ));
-          open = {this.state.searching===0}
-          closeMe = {this.closeErrorModal}
-        />
-        */}
       </View> 
     );
   }

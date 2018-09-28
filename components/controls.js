@@ -368,7 +368,7 @@ class ToolBar extends Component {
   }
 
   _renderSearchButton() {
-    if (!this.state.connected) return null;
+    if (!this.state.connected || this.state.connected.type == 'none' ) return null;
 
     return (
       <MaterialCommunityIcons.Button
@@ -391,6 +391,7 @@ class ToolBar extends Component {
   }
 
   render() {
+    console.log(this.state);
     return (
       <View style={styles.panelTopBar}>
         <ScrollView horizontal={true} style={styles.panelTopBarScroll}>

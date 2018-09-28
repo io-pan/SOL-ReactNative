@@ -4,10 +4,8 @@ import {
   StatusBar,
 } from 'react-native';
 
-// import Orientation from 'react-native-orientation';
 import KeepScreenOn from 'react-native-keep-screen-on';
 import SplashScreen from "rn-splash-screen";
-
 import MOTION from './components/motion';
 
 export default class SOL extends Component {  
@@ -18,8 +16,22 @@ export default class SOL extends Component {
   }
   componentWillMount() {  
     StatusBar.setHidden(true);
-    // Orientation.lockToPortrait();
     KeepScreenOn.setKeepScreenOn(true);
+    // this.watchID = navigator.geolocation.watchPosition(
+    //    (position) => {
+    //       console.log(position);
+    //       navigator.geolocation.clearWatch(this.watchID);
+    //       alert(''+position.coords.latitude+' - '+position.coords.longitude);
+    //   },
+    //   (error) => {
+    //     alert(JSON.stringify(error))
+    //   },{
+    //     enableHighAccuracy:true,
+    //     timeout:500, 
+    //     maximumAge:1000, 
+    //     distanceFilter:1
+    //   }
+    // );
   }
 
   render() {
