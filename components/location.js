@@ -18,6 +18,21 @@ import {
   Platform,
 } from 'react-native';
 
+// blob:http://localhos…-23578f278121:20082 
+// Warning: Failed child context type: Invalid child context `virtualizedCell.cellKey` of type `number` supplied to `CellRenderer`, expected `string`.
+//     in CellRenderer (at VirtualizedList.js:687)
+//     in RCTView (at View.js:44)
+//     in RCTScrollView (at ScrollView.js:977)
+//     in ScrollView (at VirtualizedList.js:1062)
+//     in VirtualizedList (at FlatList.js:662)
+//     in FlatList (at location.js:1171)
+//     in RCTView (at View.js:44)
+//     in RCTView (at View.js:44)
+//     in GeolocationManager (at motion.js:542)
+//     in RCTView (at View.js:44)
+//     in MotionManager (at App.js:27)
+//     in SOL (at renderApplication.js:34)
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView from 'react-native-maps';
 // import Geocoder from 'react-native-geocoder';
@@ -26,7 +41,7 @@ import RNFetchBlob from 'rn-fetch-blob'
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 import LocalizedStrings from 'react-native-localization';
 
-require('./googleAPIKEY.js');
+import { GOOGLE_APIKEY } from './googleAPIKEY.js';
 
 const deviceWidth = Dimensions.get('window').width,
       deviceHeight = Dimensions.get('window').height,
