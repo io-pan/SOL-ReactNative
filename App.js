@@ -4,7 +4,7 @@ import {
   StatusBar,
 } from 'react-native';
 
-import Orientation from 'react-native-orientation';
+// import Orientation from 'react-native-orientation';
 import KeepScreenOn from 'react-native-keep-screen-on';
 import SplashScreen from "rn-splash-screen";
 
@@ -18,7 +18,7 @@ export default class SOL extends Component {
   }
   componentWillMount() {  
     StatusBar.setHidden(true);
-    Orientation.lockToPortrait();
+    // Orientation.lockToPortrait();
     KeepScreenOn.setKeepScreenOn(true);
   }
 
