@@ -2,11 +2,11 @@ import React from 'react';
 import {
   Alert,
   Image,
-  StatusBar,
   StyleSheet,
   TouchableOpacity,
   View,
   AsyncStorage,
+  PixelRatio,
 } from 'react-native';
 
 import { RNCamera } from 'react-native-camera';
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     top:0,
     bottom:0,
     flex: 1,
-backgroundColor:'black',
+    backgroundColor:'black',
   },
   preview: {
     flex: 1,
@@ -69,46 +69,87 @@ export default class Cam extends React.Component {
     };
 */
   
+  takePicture = async (folder, orientation) => {
+    folder = RNFetchBlob.fs.dirs.DocumentDir +'/'+ folder;
+    console.log(folder);
+    console.log(orientation);
 
-  // takePicture = async function() {
-  //   if (this.camera) {
-  //     const options = { quality: 0.5, base64: true };
-  //     const data = await this.camera.takePictureAsync(options)
-  //     console.log(data.uri);
-  //   }
-  // };
-
-  takePicture = (folder, orientation) => {
     if (this.camera) {
-      this.camera.capture({jpegQuality:70})
-      .then((srcPath) => {
 
-        const dirs = RNFetchBlob.fs.dirs;
-        srcPath = srcPath.path.split('/');
-        srcPath = srcPath[srcPath.length-1];
-        srcPath = dirs.CacheDir +'/'+ srcPath,
-        destName = orientation.lat +'_'+ orientation.lon +'_'+ orientation.roll + '.jpg',
-        destPath = dirs.DocumentDir +'/'+ folder +'/'+ destName;
+        this.camera.getSupportedRatiosAsync().then((data) => {
+          console.log('getSupportedRatiosAsync');
+          console.log(data);
+
+          console.log (this.device_height);
+          console.log (this.device_width);
+          
+// scr cap 2220*1080  18.5:9
+// app res 740*360
+
+// "1:1", "3:2", "4:3", "11:9", "16:9"      ...18.5:9
+// 1        1.5  1.333   1222   1.777        2.055555
+
+// // photo
+// h 1440*w1080 4:3
+          var ratio = 0;
+      });
+
+      try {
+        var data = await this.camera.takePictureAsync({ 
+          quality: 0.7, 
+          base64: true, 
+          width: Dimensions.get('window').width * PixelRatio.get(),
+          fixOrientation: true,
+          ratio:'18.5:9',
+        });
+        console.log('Picture taken:');
+        console.log(data);
+          // height: 3024
+          // uri: "file:///data/user/0/com.sol/cache/Camera/2582d5c5-a8a0-4658-91b0-9ff14f501634.jpg"
+          // width: 4032
+            // RNFetchBlob.fs.ls(RNFetchBlob.fs.dirs.CacheDir+'/'+'Camera').then((files) => {
+            //  console.log('RNFetchBlob');
+            //  console.log(RNFetchBlob.fs.dirs.CacheDir+'/'+'Camera');
+            //  console.log(files);
+            //  });
+    
+            // RNFetchBlob.fs.exists(data.uri.replace('file://',''))
+            //    .then((exist) => {
+            //        console.log(`file ${exist ? '' : 'not'} exists`)
+            //    }).catch((error) => {
+            //     console.log(error);
+            //  }); 
 
         // Move picture to location folder.
+        const destPath = folder +'/'+ orientation.lat +'_'+ orientation.lon +'_'+ orientation.roll + '.jpg';        
         RNFetchBlob.fs.mv(
-          srcPath,
+          data.uri.replace('file://',''),
           destPath
         ).then(() => {
-          this.props.getNewPhoto(destName)
+          console.log('moved ' + destPath);
+          // RNFetchBlob.fs.ls(folder).then((files) => {
+          //   console.log('dossier' + folder);
+          //   console.log(files);
+          // });
+          // Send photo to webview.
+          this.props.getNewPhoto(data.base64);
         }).catch((error) => {
-          // console.log(error);
+           console.log(error);
         }); 
-      })
-      .catch(err => console.error(err));
+      } 
+      catch (err) {
+        // console.log('err: ', err);
+      }
     }
-  }
+  };
 
   componentDidMount() {
     this.getFOV();
   }
 
   getFOV() {
+    // console.log('this.camera');console.log(this.camera);
+    //  console.log('RNCamera');console.log(RNCamera);
     this.props.getFOVCallback('68');
     // this.camera.getFOV()
     // .then(res => {
@@ -121,13 +162,19 @@ export default class Cam extends React.Component {
     // });
   };
 
+
+  getWindowDimensions(event) {
+    this.device_width = event.nativeEvent.layout.width,
+    this.device_height = event.nativeEvent.layout.height
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <StatusBar
-          animated
-          hidden
-        />
+      <View 
+        style={styles.container}
+        onLayout={(event) => this.getWindowDimensions(event)} 
+        >
+        
         <RNCamera
           ref={ref => {
             this.camera = ref;
@@ -138,64 +185,7 @@ export default class Cam extends React.Component {
           permissionDialogTitle={'Permission to use camera'}
           permissionDialogMessage={'We need your permission to use your camera phone'}
         />
-
-       
-        {/*
-        <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
-          style={styles.preview}
-          aspect={this.state.camera.aspect}
-          captureTarget={this.state.camera.captureTarget}
-          type={this.state.camera.type}
-          flashMode={this.state.camera.flashMode}
-          mirrorImage={false}
-          playSoundOnCapture={false}
-          captureQuality={this.state.camera.captureQuality}
-          orientation={this.state.camera.orientation}
-        />
-        */ }
       </View>
     );
   }
-
 }
-
-
-
-
-  //   <View style={styles.container}>
-  //       <RNCamera
-  //           ref={ref => {
-  //             this.camera = ref;
-  //           }}
-  //           style = {styles.preview}
-  //           type={RNCamera.Constants.Type.back}
-  //           flashMode={RNCamera.Constants.FlashMode.off}
-  //           permissionDialogTitle={'Permission to use camera'}
-  //           permissionDialogMessage={'We need your permission to use your camera phone'}
-    
-  //       />
-  //       <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center',}}>
-  //       <TouchableOpacity
-  //           onPress={this.takePicture.bind(this)}
-  //           style = {styles.capture}
-  //       >
-  //           <Text style={{fontSize: 14}}> SNAP </Text>
-  //       </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //   );
-  // }
-
- 
-
-  // takePicture = async function() {
-  //   if (this.camera) {
-  //     const data = await this.camera.getSupportedRatiosAsync()
-  //     console.log(data);
-  //   }
-  // };
-
-
