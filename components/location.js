@@ -211,12 +211,12 @@ class LocationEdit extends Component {
   }
 
   onRegionChange(region) {
-    // this.setState({ 
-    //   lat: region.latitude,
-    //   lon: region.longitude,
-    //   latitudeDelta: region.latitudeDelta,
-    //   longitudeDelta: region.longitudeDelta,
-    // });
+    this.setState({ 
+      // lat: region.latitude,
+      // lon: region.longitude,
+      // latitudeDelta: region.latitudeDelta,
+      // longitudeDelta: region.longitudeDelta,
+    });
   }
 
   onRegionChangeComplete(region) {
@@ -596,13 +596,14 @@ class LocationListItem extends Component {
         //<style= {(this.props.id == this.props.selected) ? styles.listItemHilight :  styles.listItemNormal}
         onPress={this._onPress}
         underlayColor = "rgba(255,255,255,0.5)"
+        style={styles.flex1} 
         >
         <View style= {(this.props.id == this.props.selected) ? styles.listItemHilight :  styles.listItemNormal}>
           <View style={styles.listItemInfoContainer} >
             <Text style={styles.listItemName}>{this.props.title}</Text>
-             <View style={styles.listItemCoords} >
-               <Text style={styles.flex05}>Lat. {this.props.lat}</Text>
+            <View style={styles.listItemCoords} >
                <Text style={styles.flex05}>UTC{formatGMT(this.props.gmt)}</Text>
+               <Text style={styles.flex05}>Lat. {this.props.lat}</Text>
             </View>
           </View>
 
@@ -650,8 +651,8 @@ export default class GeolocationManager extends Component {
     this.props.gotNewLoc(place);
   }
 
-  // Local storage list
-  _keyExtractor = (item, index) => item.id;
+  // Local storage listkeyExtractor = { (item, index) => index.toString() };
+  _keyExtractor = (item, index) =>  item.id.toString();
   _onPressItem = (id) => {
     AsyncStorage.setItem('selectedPlace', JSON.stringify(id));
     this.forwardSelectedLocation( this.locList[id] );
@@ -940,8 +941,6 @@ export default class GeolocationManager extends Component {
           });
         },
         (error) => {
-
-          alert('geolocerror');
           this.setState({searching:0});
           this.forwardSelectedLocation(false);
         },{
@@ -1288,27 +1287,27 @@ const styles = StyleSheet.create({
   },
 
     listItemNormal: {
-      justifyContent: 'center',
+      flex:1,
       backgroundColor:'rgba(255,255,255,0.8)',
       padding: 10,
       marginBottom:1,
       flexDirection:'row'
     },
     listItemHilight: {
+      flex:1,
       backgroundColor:'rgba(255,255,255,1)',
       padding: 10,
       marginBottom:1,
       flexDirection:'row',
     },
-      listItem:{
-        
-      },
         listItemInfoContainer: {
-          flex:0.6,
+          marginEnd:80,
+          flex:1,
         },
 
           listItemName: {
             fontSize: 20,
+            flex: 1,
           },
 
           listItemCoords: {
@@ -1319,12 +1318,15 @@ const styles = StyleSheet.create({
           },
 
         listItemEditContainer :{
-          alignSelf: 'flex-end', 
+          position:'absolute',
+          right:0,
+          width:70,
+          paddingTop:10,
         },
 
           listItemEditButton: {
             borderRadius:50,
-            padding: 10,            
+            padding:5,            
           },
           deletePhoto: {
             position:'absolute',
