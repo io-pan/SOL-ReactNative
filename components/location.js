@@ -101,6 +101,9 @@ const deviceWidth = Dimensions.get('window').width,
         },
       });
 
+    strings.setLanguage('en');
+    strings.setLanguage(strings.getInterfaceLanguage());
+
 
 //-----------------------------------------------------------------------------------------
 class LocationEdit extends Component {
@@ -153,7 +156,14 @@ class LocationEdit extends Component {
             name: text,
             lat: responseJson.results[0].geometry.location.lat,
             lon: responseJson.results[0].geometry.location.lng,
-          })
+          }, function(){
+            this.refs.lamap.animateToRegion({
+              latitude:responseJson.results[0].geometry.location.lat,
+              longitude:responseJson.results[0].geometry.location.lng,
+              latitudeDelta:this.state.latitudeDelta,
+              longitudeDelta:this.state.longitudeDelta,
+            });
+          });
 
           // Get timezone
           var summerDate = new Date();
@@ -278,11 +288,12 @@ class LocationEdit extends Component {
       fetch('https://maps.googleapis.com/maps/api/geocode/json?'
           +'latlng=' + region.latitude + ',' + region.longitude
           +'&location_type=APPROXIMATE&result_type=political'
+          +'&language='+strings.getLanguage()
           +'&key='+GOOGLE_APIKEY)
       .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.status=="OK") {
-          var storableLocation = {};
+          var storableLocation = {city:'',state:'',country:''};
           for (var ac = 0; ac < responseJson.results[0].address_components.length; ac++) {
             var component = responseJson.results[0].address_components[ac];
 
@@ -301,7 +312,9 @@ class LocationEdit extends Component {
           console.log('geo code');
           console.log(responseJson.results[0]);
           this.setState({ 
-            name: storableLocation.city +', '+ storableLocation.country,
+            name: (storableLocation.city
+                  ? storableLocation.city : storableLocation.state)
+                  + ', '+ storableLocation.country,
           });
         }
         else {
@@ -909,12 +922,13 @@ export default class GeolocationManager extends Component {
               fetch('https://maps.googleapis.com/maps/api/geocode/json?'
                   +'latlng=' + this.state.lat + ',' + this.state.lon
                   +'&location_type=ROOFTOP&result_type=street_address'
+                  +'&language='+strings.getLanguage()
                   +'&key='+GOOGLE_APIKEY)
               .then((response) => response.json())
               .then((responseJson) => {
                 if(responseJson.status=="OK") {
                   // console.log(responseJson.results);
-                  var storableLocation = {};
+                  var storableLocation = {city:'',state:'',country:''};
                   for (var ac = 0; ac < responseJson.results[0].address_components.length; ac++) {
                     var component = responseJson.results[0].address_components[ac];
 
@@ -930,7 +944,9 @@ export default class GeolocationManager extends Component {
                             break;
                   }
                 };
-                  this.setState({ name: storableLocation.city+', '+storableLocation.country }, function() {
+                  this.setState({ name: (storableLocation.city
+                                  ? storableLocation.city : storableLocation.state)
+                                  + ', '+ storableLocation.country }, function() {
                     this.forwardSelectedLocation({
                       id:-1,
                       name:this.state.name,
