@@ -18,21 +18,6 @@ import {
   Platform,
 } from 'react-native';
 
-// blob:http://localhos…-23578f278121:20082 
-// Warning: Failed child context type: Invalid child context `virtualizedCell.cellKey` of type `number` supplied to `CellRenderer`, expected `string`.
-//     in CellRenderer (at VirtualizedList.js:687)
-//     in RCTView (at View.js:44)
-//     in RCTScrollView (at ScrollView.js:977)
-//     in ScrollView (at VirtualizedList.js:1062)
-//     in VirtualizedList (at FlatList.js:662)
-//     in FlatList (at location.js:1171)
-//     in RCTView (at View.js:44)
-//     in RCTView (at View.js:44)
-//     in GeolocationManager (at motion.js:542)
-//     in RCTView (at View.js:44)
-//     in MotionManager (at App.js:27)
-//     in SOL (at renderApplication.js:34)
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView from 'react-native-maps';
 import DeviceInfo from 'react-native-device-info';
@@ -128,10 +113,14 @@ class LocationEdit extends Component {
       lon: this.props.location.lon,
       gmt:this.props.location.gmt,
       dst:this.props.location.dst,
-      latitudeDelta: 0.002,
-      longitudeDelta: 0.002,
       photoList:false,
-    }
+      region:{
+        latitude: this.props.location.lat,
+        longitude: this.props.location.lon,
+        latitudeDelta: 0.002,
+        longitudeDelta: 0.002,
+      },
+    }    
 
     this.makeCancelable = (promise) => {
       let hasCanceled_ = false;
@@ -151,7 +140,7 @@ class LocationEdit extends Component {
     this.geocodeAddressPromise = false;
   }
 
-  onRegionText(text) {
+  onSearchInput(text) {
     if (text) {
       fetch('https://maps.googleapis.com/maps/api/geocode/json'
         +'?address='+text
@@ -210,14 +199,71 @@ class LocationEdit extends Component {
     }
   }
 
-  onRegionChange(region) {
-    this.setState({ 
-      // lat: region.latitude,
-      // lon: region.longitude,
-      // latitudeDelta: region.latitudeDelta,
-      // longitudeDelta: region.longitudeDelta,
-    });
+ 
+  _renderDeleteButton() {
+    if (this.props.location.id < 0){
+      return (
+        <Icon.Button
+          name="plus-circle" 
+          size={25}
+          style={styles.listItemEditButton} 
+          color="rgba(50,50,55,0.8)"
+          backgroundColor = {'transparent'}
+          underlayColor = "rgba(255,255,255,0.5)"
+          onPress = { () => this.props.addMe({
+            id: this.props.location.id, 
+            name:this.state.name, 
+            lat: parseFloat(this.state.lat.toFixed(6)),
+            lon: parseFloat(this.state.lon.toFixed(6)),
+            gmt: this.state.gmt,
+            dst: this.state.dst,
+          })}
+        ><Text style={{fontWeight:'bold', fontSize:15}}>{strings.add}</Text></Icon.Button>
+      );
+    }
+    else {
+      return (
+        <Icon.Button
+          name="trash-o" 
+          size={25}
+          style={styles.listItemEditButton} 
+          color="rgba(50,50,55,0.8)"
+          backgroundColor = {'transparent'}
+          underlayColor = "rgba(255,255,255,0.5)"
+          onPress = { () => this.props.deleteMe() }
+        ><Text style={{fontWeight:'bold', fontSize:15}}>{strings.delete}</Text></Icon.Button>
+      );
+    }
   }
+
+  _renderSearchInput(){
+    if (this.props.location.id>=0) return null;
+    return (
+      <View style={{margin:10}}>
+        <Icon.Button   
+          name="search"
+          size={30}
+        >
+          <TextInput
+            underlineColorAndroid='transparent'
+            ref='searchText'
+            style={{ 
+              backgroundColor:'white', 
+              flex:1,
+              margin:0, 
+              padding:3,
+            }}
+            onEndEditing =    {(event) => this.onSearchInput( event.nativeEvent.text) } 
+            onSubmitEditing = {(event) => this.onSearchInput( event.nativeEvent.text) } 
+          />
+        </Icon.Button>
+      </View>
+    );
+  }
+
+  // onRegionChange(region) {
+
+  // }
 
   onRegionChangeComplete(region) {
     this.setState({ 
@@ -231,7 +277,7 @@ class LocationEdit extends Component {
       // Get place name
       fetch('https://maps.googleapis.com/maps/api/geocode/json?'
           +'latlng=' + region.latitude + ',' + region.longitude
-          +'&location_type=ROOFTOP&result_type=street_address'
+          +'&location_type=APPROXIMATE&result_type=political'
           +'&key='+GOOGLE_APIKEY)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -284,88 +330,23 @@ class LocationEdit extends Component {
     }
   }
 
-  _renderDeleteButton() {
-    if (this.props.location.id < 0){
-      return (
-        <Icon.Button
-          name="plus-circle" 
-          size={25}
-          style={styles.listItemEditButton} 
-          color="rgba(50,50,55,0.8)"
-          backgroundColor = {'transparent'}
-          underlayColor = "rgba(255,255,255,0.5)"
-          onPress = { () => this.props.addMe({
-            id: this.props.location.id, 
-            name:this.state.name, 
-            lat: parseFloat(this.state.lat.toFixed(6)),
-            lon: parseFloat(this.state.lon.toFixed(6)),
-            gmt: this.state.gmt,
-            dst: this.state.dst,
-          })}
-        ><Text style={{fontWeight:'bold', fontSize:15}}>{strings.add}</Text></Icon.Button>
-      );
-    }
-    else {
-      return (
-        <Icon.Button
-          name="trash-o" 
-          size={25}
-          style={styles.listItemEditButton} 
-          color="rgba(50,50,55,0.8)"
-          backgroundColor = {'transparent'}
-          underlayColor = "rgba(255,255,255,0.5)"
-          onPress = { () => this.props.deleteMe() }
-        ><Text style={{fontWeight:'bold', fontSize:15}}>{strings.delete}</Text></Icon.Button>
-      );
-    }
-  }
-
-  _renderSearchButton(){
-    if (this.props.location.id>=0) return null;
-    return (
-      <View style={{margin:10}}>
-        <Icon.Button   
-          name="search"
-          size={30}
-        >
-          <TextInput
-            underlineColorAndroid='transparent'
-            ref='searchText'
-            style={{ 
-              backgroundColor:'white', 
-              flex:1,
-              margin:0, 
-              padding:3,
-            }}
-            onEndEditing =    {(event) => this.onRegionText( event.nativeEvent.text) } 
-            onSubmitEditing = {(event) => this.onRegionText( event.nativeEvent.text) } 
-          />
-        </Icon.Button>
-      </View>
-    );
-  }
-
   _renderMap(){
-    if (!this.props.connected) return null;
     return(
       <View style={styles.map_container}  >
+
         <MapView style={styles.map} 
+        ref="lamap"
           initialRegion={{
             latitude: this.props.location.lat,
             longitude: this.props.location.lon,
             latitudeDelta: 0.002,
             longitudeDelta: 0.002,
           }} 
-          region={{
-            latitude: this.state.lat,
-            longitude: this.state.lon,
-            latitudeDelta:  this.state.latitudeDelta,
-            longitudeDelta:  this.state.longitudeDelta,
-          }}
-          mapType = "hybrid"
-          onRegionChange = { (region) => this.onRegionChange(region) } 
+          // region={this.region}
+          // onRegionChange={this.onRegionChange.bind(this)}
           onRegionChangeComplete = { (region) => this.onRegionChangeComplete(region) } 
-        ></MapView>
+ 
+        />
         <View style={styles.target_h}  ></View>
         <View style={styles.target_v}  ></View>
       </View>   
@@ -460,7 +441,7 @@ class LocationEdit extends Component {
 
         <ScrollView style={{marginTop:50}}>
 
-          {this._renderSearchButton()}
+          {this._renderSearchInput()}
 
           <TextInput
             underlineColorAndroid = 'transparent'
@@ -491,16 +472,30 @@ class LocationEdit extends Component {
                   padding:5,
                   fontSize:20,
                 }}
-                onEndEditing = {(event) => this.setState({
-                  lat: parseFloat(event.nativeEvent.text)
-                  ? parseFloat( parseFloat(event.nativeEvent.text).toFixed(6)) 
-                  : 0
-                })}
-                onSubmitEditing = {(event) => this.setState({
-                  lat: parseFloat(event.nativeEvent.text)
-                  ? parseFloat( parseFloat(event.nativeEvent.text).toFixed(6)) 
-                  : 0
-                })}
+                onEndEditing = {(event) => {
+                  var latitude = parseFloat(event.nativeEvent.text)
+                                    ? parseFloat( parseFloat(event.nativeEvent.text).toFixed(6))
+                                    : 0;
+                  this.setState({lat:latitude});
+                  this.refs.lamap.animateToRegion({
+                    latitude:latitude,
+                    longitude:this.state.lon,
+                    latitudeDelta:this.state.latitudeDelta,
+                    longitudeDelta:this.state.longitudeDelta,
+                  });
+                }}
+                onSubmitEditing = {(event) => {
+                  var latitude = parseFloat(event.nativeEvent.text)
+                                    ? parseFloat( parseFloat(event.nativeEvent.text).toFixed(6))
+                                    : 0;
+                  this.setState({lat:latitude});
+                  this.refs.lamap.animateToRegion({
+                    latitude:latitude,
+                    longitude:this.state.lon,
+                    latitudeDelta:this.state.latitudeDelta,
+                    longitudeDelta:this.state.longitudeDelta,
+                  });
+                }}
               />
             </View>
             <View style = {styles.flex05}>
@@ -516,16 +511,30 @@ class LocationEdit extends Component {
                   padding:5,
                   fontSize:20,
                 }}
-                onEndEditing = {(event) => this.setState({
-                  lon: parseFloat(event.nativeEvent.text)
-                  ? parseFloat( parseFloat(event.nativeEvent.text).toFixed(6)) 
-                  : 0
-                })}
-                onSubmitEditing = {(event) => this.setState({
-                  lon: parseFloat(event.nativeEvent.text)
-                  ? parseFloat( parseFloat(event.nativeEvent.text).toFixed(6)) 
-                  : 0
-                })}
+                onEndEditing = {(event) => {
+                  var longitude = parseFloat(event.nativeEvent.text)
+                                    ? parseFloat( parseFloat(event.nativeEvent.text).toFixed(6))
+                                    : 0;
+                  this.setState({lon:longitude});
+                  this.refs.lamap.animateToRegion({
+                    latitude:this.state.lat,
+                    longitude:longitude,
+                    latitudeDelta:this.state.latitudeDelta,
+                    longitudeDelta:this.state.longitudeDelta,
+                  });
+                }}
+                onSubmitEditing = {(event) => {
+                  var longitude = parseFloat(event.nativeEvent.text)
+                                    ? parseFloat( parseFloat(event.nativeEvent.text).toFixed(6))
+                                    : 0;
+                  this.setState({lon:longitude});
+                  this.refs.lamap.animateToRegion({
+                    latitude:this.state.lat,
+                    longitude:longitude,
+                    latitudeDelta:this.state.latitudeDelta,
+                    longitudeDelta:this.state.longitudeDelta,
+                  });
+                }}
               />
             </View>
           </View>
@@ -867,6 +876,7 @@ export default class GeolocationManager extends Component {
   }
 
   geoLocConfirmed() {
+    console.log(this.state.connected);
     this.watchID = navigator.geolocation.watchPosition(
        (position) => {
           console.log(position);
@@ -880,7 +890,21 @@ export default class GeolocationManager extends Component {
             gmt: DeviceInfo.UTC()/1000,
             dst: DeviceInfo.useDTS(),
           }, function()   {
-            if (this.state.connected) {
+             if (!this.state.connected || this.state.connected.type == 'none' ) {
+              this.setState({
+                name: strings.currentplace,
+              }, function() {
+                this.forwardSelectedLocation({
+                  id:-1,
+                  name:this.state.name,
+                  lat: this.state.lat,
+                  lon: this.state.lon,
+                  gmt: this.state.gmt,
+                  dst: this.state.dst,
+                });
+              });
+            }
+            else {
               // Get location name
               fetch('https://maps.googleapis.com/maps/api/geocode/json?'
                   +'latlng=' + this.state.lat + ',' + this.state.lon
@@ -923,20 +947,6 @@ export default class GeolocationManager extends Component {
                 }
               })
               .catch((error) => { console.log(error);  }); 
-            }
-            else {
-              this.setState({
-                name: strings.currentplace,
-              }, function() {
-                this.forwardSelectedLocation({
-                  id:-1,
-                  name:this.state.name,
-                  lat: this.state.lat,
-                  lon: this.state.lon,
-                  gmt: this.state.gmt,
-                  dst: this.state.dst,
-                });
-              });
             }
           });
         },
