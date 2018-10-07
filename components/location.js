@@ -16,6 +16,7 @@ import {
   NetInfo,
   Modal,
   Platform,
+  PermissionsAndroid,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -74,6 +75,8 @@ const deviceWidth = Dimensions.get('window').width,
 
           'currentplace': 'Current position',
           'unknownplace': 'Unknown location',
+          'locPermissionTitle': 'Location Permission',
+          'locPermissionMsg': 'Allow SOL to access your location?',
         },
         'fr':{
           yes:'OUI',
@@ -98,6 +101,8 @@ const deviceWidth = Dimensions.get('window').width,
 
           'currentplace': 'Position actuelle',
           'unknownplace': 'Lieu inconnu',
+          'locPermissionTitle': 'Permission de géolocalisarion',
+          'locPermissionMsg': 'Autoriser SOL à accéder à votre position?',
         },
       });
 
@@ -348,7 +353,8 @@ class LocationEdit extends Component {
       <View style={styles.map_container}  >
 
         <MapView style={styles.map} 
-        ref="lamap"
+          ref="lamap"
+          mapType="hybrid"
           initialRegion={{
             latitude: this.props.location.lat,
             longitude: this.props.location.lon,
@@ -871,7 +877,28 @@ export default class GeolocationManager extends Component {
     this.setState({ sort:[key,asc] });
   }
 
-  getLoc() {
+
+  async getLoc() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title': strings.locPermissionTitle,
+          'message': strings.locPermissionMsg,
+        }
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.getLocModal();
+      } else {
+        this.setState({searching:0});
+        this.forwardSelectedLocation(false);
+      }
+    } catch (err) {
+      console.warn(err)
+    }
+  }
+
+  getLocModal() {
     if(Platform.OS === 'android'){
       LocationServicesDialogBox.checkLocationServicesIsEnabled({
         enableHighAccuracy: false,

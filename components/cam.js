@@ -87,7 +87,11 @@ export default class Cam extends React.Component {
 // app res 740*360
 
 // "1:1", "3:2", "4:3", "11:9", "16:9"      ...18.5:9
-// 1        1.5  1.333   1222   1.777        2.055555
+// 1        1.5  1.333   1.222   1.777        2.055555
+
+
+// 16
+// 9
 
 // // photo
 // h 1440*w1080 4:3
@@ -144,22 +148,35 @@ export default class Cam extends React.Component {
   };
 
   componentDidMount() {
-    this.getFOV();
+    // this.getFOV();
   }
 
-  getFOV() {
-    // console.log('this.camera');console.log(this.camera);
-    //  console.log('RNCamera');console.log(RNCamera);
-    this.props.getFOVCallback('68');
-    // this.camera.getFOV()
-    // .then(res => {
-    //   // console.log('getFOV');
-    //   this.props.getFOVCallback( res[Camera.constants.Type.back] );
-    // })
-    // .catch(err =>  {
-    //   // Cam not yet initialised, try again.
-    //   this.getFOV();
-    // });
+  onCameraReady(){
+    console.log('onCameraReady');
+    console.log(this.camera);
+
+     this.camera.getAvailablePictureSizes().then((data) => {
+          console.log('getAvailablePictureSizes');
+          console.log(data);
+     });
+     this.camera.getSupportedRatiosAsync().then((data) => {
+          console.log('getSupportedRatiosAsync');
+          console.log(data);
+     });
+
+    this._getFOV();
+};
+ 
+  _getFOV() {
+    console.log('getFOV');
+    this.camera.getFOV().then((data) => {
+     console.log('gotFOV');
+      console.log(data);
+      this.props.getFOVCallback( data[0] );
+    }).catch(err =>  {
+      // Cam not yet initialised, try again.
+      console.log(err);
+    });
   };
 
 
@@ -181,9 +198,15 @@ export default class Cam extends React.Component {
           }}
           style = {styles.preview}
           type={RNCamera.Constants.Type.back}
+
           flashMode={RNCamera.Constants.FlashMode.off}
           permissionDialogTitle={'Permission to use camera'}
           permissionDialogMessage={'We need your permission to use your camera phone'}
+
+          autoFocus ={RNCamera.Constants.AutoFocus.off}
+          focusDepth = {1}
+          onCameraReady =  { () => this.onCameraReady() } 
+
         />
       </View>
     );
