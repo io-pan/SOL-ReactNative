@@ -17,21 +17,6 @@ export default class SOL extends Component {
   componentWillMount() {  
     StatusBar.setHidden(true);
     KeepScreenOn.setKeepScreenOn(true);
-    // this.watchID = navigator.geolocation.watchPosition(
-    //    (position) => {
-    //       console.log(position);
-    //       navigator.geolocation.clearWatch(this.watchID);
-    //       alert(''+position.coords.latitude+' - '+position.coords.longitude);
-    //   },
-    //   (error) => {
-    //     alert(JSON.stringify(error))
-    //   },{
-    //     enableHighAccuracy:true,
-    //     timeout:500, 
-    //     maximumAge:1000, 
-    //     distanceFilter:1
-    //   }
-    // );
   }
 
   render() {

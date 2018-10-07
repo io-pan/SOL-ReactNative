@@ -408,7 +408,7 @@ export default class MotionManager extends Component {
 
     if (this.webViewBridgeReady) {
       this.refs.scene.postMessage( JSON.stringify({ 
-        FOV:angle,
+        FOV:angle, // horizontal fov
         sliderTime:d,
       }));
     }
@@ -418,23 +418,33 @@ export default class MotionManager extends Component {
     }
   }
 
-  getNewPhoto = (base64) => {
-    console.log(base64);
-    // const metaData = photoPath.slice(0,-4).split('_'), // -4 <=> .jpg length
-    //       currentFolder = RNFetchBlob.fs.dirs.DocumentDir + '/' + this.curLoc.date;
+  getNewPhoto = (photoPath, base64) => {
 
-    // var promises = RNFetchBlob.fs.readFile(currentFolder+'/'+photoPath, 'base64')
-    //     .then((data) => {
-    //       console.log('rea');
-          // this.refs.scene.postMessage( JSON.stringify({
-          //   photo:{
-          //     src:'data:image/jpeg;base64,' + base64,
-          //     lat:metaData[0],
-          //     lon:metaData[1],
-          //     roll:metaData[2],
-          //   }
-          // }));
-        // })
+    const metaData = photoPath.slice(0,-4).split('_'), // -4 <=> .jpg length
+          currentFolder = RNFetchBlob.fs.dirs.DocumentDir + '/' + this.curLoc.date;
+
+    var promises = RNFetchBlob.fs.readFile(currentFolder+'/'+photoPath, 'base64')
+        .then((data) => {
+          console.log('rea');
+          this.refs.scene.postMessage( JSON.stringify({
+            photo:{
+              src:'data:image/jpeg;base64,' + base64,
+              lat:metaData[0],
+              lon:metaData[1],
+              roll:metaData[2],
+            }
+          }));
+        })
+
+
+    // this.refs.scene.postMessage( JSON.stringify({
+    //   photo:{
+    //     src:'data:image/jpeg;base64,' + base64,
+    //     lat:metaData[0],
+    //     lon:metaData[1],
+    //     roll:metaData[2],
+    //   }
+    // }));
   }
 
   sendPhotosToBridge(){

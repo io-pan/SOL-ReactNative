@@ -29,7 +29,6 @@ import LocalizedStrings from 'react-native-localization';
 import { GOOGLE_APIKEY } from './googleAPIKEY.js';
 
 const deviceWidth = Dimensions.get('window').width,
-      deviceHeight = Dimensions.get('window').height,
       appFolder = RNFetchBlob.fs.dirs.DocumentDir,
       formatGMT = function (sec){
         var sign ='';

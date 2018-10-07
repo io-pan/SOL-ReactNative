@@ -446,14 +446,17 @@
                             planeTexture = new THREE.Texture(),
                             geometry = new THREE.PlaneGeometry(W,H),
                             image = new Image();
-                        
+
                         image.src = jsonData.photo.src;
                         planeTexture.image = image;
                         planeTexture.repeat.set(1, 1);
                         planeTexture.wrapS = planeTexture.wrapT = THREE.MirroredRepeatWrapping;
                         planeTexture.needsUpdate = true;
  
-                        var material = new THREE.MeshBasicMaterial({ 'map':planeTexture }),
+                        var material = new THREE.MeshBasicMaterial({
+                                'map':planeTexture ,
+                                // "side": THREE.DoubleSide, 
+                            }),
                             photo = new THREE.Mesh(geometry, material);
 
                         photo.position.set(

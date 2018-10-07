@@ -7,6 +7,7 @@ import {
   View,
   AsyncStorage,
   PixelRatio,
+  PermissionsAndroid,
 } from 'react-native';
 
 import { RNCamera } from 'react-native-camera';
@@ -36,17 +37,6 @@ export default class Cam extends React.Component {
 
     this.camera = null;
     this.state = {
-      // camera: {
-      //   aspect: Camera.constants.Aspect.cover,
-      //   captureTarget: Camera.constants.CaptureTarget.temp,
-      //     // temp:        file:///data/user/0/com.sol/cache
-      //     // disk:        file:///storage/emulated/0/Pictures
-      //     // cameraRoll : file:///storage/emulated/0/DCIM/
-      //   captureQuality: Camera.constants.CaptureQuality.preview,
-      //   type: Camera.constants.Type.back,
-      //   orientation: Camera.constants.Orientation.portrait,
-      //   flashMode: Camera.constants.FlashMode.off,
-      // },
       FOV: this.props.FOV,
     };
   }
@@ -68,87 +58,101 @@ export default class Cam extends React.Component {
       console.log( value);
     };
 */
-  
+
   takePicture = async (folder, orientation) => {
     folder = RNFetchBlob.fs.dirs.DocumentDir +'/'+ folder;
-    console.log(folder);
-    console.log(orientation);
+    // console.log(folder);
+    // console.log(orientation);
 
     if (this.camera) {
 
-        this.camera.getSupportedRatiosAsync().then((data) => {
-          console.log('getSupportedRatiosAsync');
-          console.log(data);
-
-          console.log (this.device_height);
-          console.log (this.device_width);
-          
-// scr cap 2220*1080  18.5:9
-// app res 740*360
-
-// "1:1", "3:2", "4:3", "11:9", "16:9"      ...18.5:9
-// 1        1.5  1.333   1.222   1.777        2.055555
-
-
-// 16
-// 9
-
-// // photo
-// h 1440*w1080 4:3
-          var ratio = 0;
-      });
-
       try {
-        var data = await this.camera.takePictureAsync({ 
-          quality: 0.7, 
-          base64: true, 
-          width: Dimensions.get('window').width * PixelRatio.get(),
-          fixOrientation: true,
-          ratio:'18.5:9',
-        });
-        console.log('Picture taken:');
-        console.log(data);
-          // height: 3024
-          // uri: "file:///data/user/0/com.sol/cache/Camera/2582d5c5-a8a0-4658-91b0-9ff14f501634.jpg"
-          // width: 4032
-            // RNFetchBlob.fs.ls(RNFetchBlob.fs.dirs.CacheDir+'/'+'Camera').then((files) => {
-            //  console.log('RNFetchBlob');
-            //  console.log(RNFetchBlob.fs.dirs.CacheDir+'/'+'Camera');
-            //  console.log(files);
-            //  });
-    
-            // RNFetchBlob.fs.exists(data.uri.replace('file://',''))
-            //    .then((exist) => {
-            //        console.log(`file ${exist ? '' : 'not'} exists`)
-            //    }).catch((error) => {
-            //     console.log(error);
-            //  }); 
+        const granted = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]);
+          console.log(granted);
 
-        // Move picture to location folder.
-        const destPath = folder +'/'+ orientation.lat +'_'+ orientation.lon +'_'+ orientation.roll + '.jpg';        
-        RNFetchBlob.fs.mv(
-          data.uri.replace('file://',''),
-          destPath
-        ).then(() => {
-          console.log('moved ' + destPath);
-          // RNFetchBlob.fs.ls(folder).then((files) => {
-          //   console.log('dossier' + folder);
-          //   console.log(files);
-          // });
-          // Send photo to webview.
-          this.props.getNewPhoto(data.base64);
-        }).catch((error) => {
-           console.log(error);
-        }); 
-      } 
-      catch (err) {
-        // console.log('err: ', err);
+        if (granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED
+        &&  granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED){
+     
+          try {
+            var data = await this.camera.takePictureAsync({ 
+              quality: 0.7, 
+              base64: true, 
+              width: this.device_width * PixelRatio.get(),
+              fixOrientation: true,
+            });
+            console.log('Picture taken:');
+            console.log(data);
+              // height: 3024
+              // uri: "file:///data/user/0/com.sol/cache/Camera/2582d5c5-a8a0-4658-91b0-9ff14f501634.jpg"
+              // width: 4032
+
+            const photoURI = data.uri.replace('file://','');
+            // RNFetchBlob.fs.exists(photoURI)
+            //    .then((exist) => {
+            //       console.log(`file ${exist ? '' : 'not'} exists`);
+            //       if(exist) {
+                    // Move picture to location folder.
+                    const destPath = folder +'/'+ orientation.lat +'_'+ orientation.lon +'_'+ orientation.roll + '.jpg';        
+                    console.log(photoURI);
+                    console.log(destPath);
+                    RNFetchBlob.fs.mv(
+                      photoURI,
+                      destPath
+                    ).then(() => {
+                      console.log('moved ' + destPath);
+                      // RNFetchBlob.fs.ls(folder).then((files) => {
+                      //   console.log('dossier' + folder);
+                      //   console.log(files);
+                      // });
+            
+                      // Send photo to webview.
+                      this.props.getNewPhoto(
+                        orientation.lat +'_'+ orientation.lon +'_'+ orientation.roll + '.jpg', 
+                        data.base64
+                      );
+                    }).catch((error) => {
+                      alert('Move file ERROR');
+                      console.log('Move file ',error);
+                    }); 
+                              
+             //      } // file exists.
+             //   }).catch((error) => {
+             //    console.log(error);
+             // }); 
+
+          } 
+          catch (err) {
+            // console.log('takePictureAsync ERROR: ', err);
+          }
+        } else {
+         console.log('REFUSED');
+        }
+      } catch (err) {
+        console.warn(err)
       }
+
+
+// // scr cap 2220*1080  18.5:9
+// // app res 740*360
+
+// // "1:1", "3:2", "4:3", "11:9", "16:9"      ...18.5:9
+// // 1        1.5  1.333   1.222   1.777        2.055555
+
+
+// // 16
+// // 9
+
+// // // photo
+// // h 1440*w1080 4:3
+
+//       });
+
     }
   };
 
   componentDidMount() {
-    // this.getFOV();
   }
 
   onCameraReady(){
@@ -163,6 +167,9 @@ export default class Cam extends React.Component {
           console.log('getSupportedRatiosAsync');
           console.log(data);
      });
+
+//
+// Dimensions.get('window').width * PixelRatio.get(),
 
     this._getFOV();
 };
@@ -181,8 +188,8 @@ export default class Cam extends React.Component {
 
 
   getWindowDimensions(event) {
-    this.device_width = event.nativeEvent.layout.width,
-    this.device_height = event.nativeEvent.layout.height
+    this.device_width = event.nativeEvent.layout.width;
+    this.device_height = event.nativeEvent.layout.height;
   }
 
   render() {
