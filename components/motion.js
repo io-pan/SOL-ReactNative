@@ -12,8 +12,13 @@ import {
   BackHandler,
   Modal,
   DeviceEventEmitter,
+  PixelRatio,
+  PermissionsAndroid,
+  // Image,
+  // AsyncStorage,
 } from 'react-native';
 
+import { RNCamera } from 'react-native-camera';
 import RNExitApp from 'react-native-exit-app';
 import LocalizedStrings from 'react-native-localization';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -22,7 +27,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import CONTROLS from './controls';
 import LOCATIONS from './location';
-import CAM from './cam';
+// import CAM from './cam';
 import INFOS from './infos';
 
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
@@ -44,7 +49,7 @@ const deviceWidth  = Dimensions.get('window').width,
           close:'CLOSE',
           gps_error_title:'ERROR.',
           gps_error:'Please check your device parameters. Location service must be enabled.',
-          exitApp:'Do you want to quit this marvelous application ?',
+          exitApp:'Exit app ?',
           yes:'YES',
           no:'NO',
           elevation:'Elev.',
@@ -54,7 +59,7 @@ const deviceWidth  = Dimensions.get('window').width,
           close:'FERMER',
           gps_error_title:'Géolocalisation impossible.',
           gps_error:'Vérifier que le service est disponible sur votre appareil et qu\'il est bien activé.',
-          exitApp:'Voulez-vous quitter cette merveilleuse application ?',
+          exitApp:'Quitter l\'application ?',
           yes:'OUI',
           no:'NON',
           elevation:'Élév.',
@@ -337,7 +342,7 @@ export default class MotionManager extends Component {
     }
     else if(key=='takePicture'){
       // console.log(this.refs.deviceOrientation.state.orientation);
-      this.refs.cam.takePicture( value, this.refs.deviceOrientation.state.orientation);
+      this.takePicture( value, this.refs.deviceOrientation.state.orientation);
     }
     else if(key=='addLocation'){
       this.refs.LOCATIONS._onAddLoc();
@@ -418,35 +423,6 @@ export default class MotionManager extends Component {
     }
   }
 
-  getNewPhoto = (photoPath, base64) => {
-
-    const metaData = photoPath.slice(0,-4).split('_'), // -4 <=> .jpg length
-          currentFolder = RNFetchBlob.fs.dirs.DocumentDir + '/' + this.curLoc.date;
-
-    var promises = RNFetchBlob.fs.readFile(currentFolder+'/'+photoPath, 'base64')
-        .then((data) => {
-          console.log('rea');
-          this.refs.scene.postMessage( JSON.stringify({
-            photo:{
-              src:'data:image/jpeg;base64,' + base64,
-              lat:metaData[0],
-              lon:metaData[1],
-              roll:metaData[2],
-            }
-          }));
-        })
-
-
-    // this.refs.scene.postMessage( JSON.stringify({
-    //   photo:{
-    //     src:'data:image/jpeg;base64,' + base64,
-    //     lat:metaData[0],
-    //     lon:metaData[1],
-    //     roll:metaData[2],
-    //   }
-    // }));
-  }
-
   sendPhotosToBridge(){
     // console.log('sendPhotosToBridge');
     var photos = [];
@@ -455,7 +431,7 @@ export default class MotionManager extends Component {
       var promises = [];
       for(var i=0; i<files.length; i++) {
         const metaData = files[i].slice(0,-4).split('_');
-
+         console.log(currentFolder+'/'+files[i]);
         promises[i] = RNFetchBlob.fs.readFile(currentFolder+'/'+files[i], 'base64')
           .then((data) => {
             this.refs.scene.postMessage( JSON.stringify({
@@ -464,6 +440,8 @@ export default class MotionManager extends Component {
                 lat:metaData[0],
                 lon:metaData[1],
                 roll:metaData[2],
+                width:metaData[3],
+                height:metaData[4],
               }
             }));
           })
@@ -520,23 +498,166 @@ export default class MotionManager extends Component {
     }
   }
 
+
+  onCameraReady() {
+    // console.log('onCameraReady');
+
+    // this.camera.getAvailablePictureSizes().then((sizes) => {
+    //   console.log('getAvailablePictureSizes', sizes);
+    // });
+
+    this.camera.getSupportedRatiosAsync().then((ratios) => {
+      // console.log('getSupportedRatiosAsync', ratios);
+
+      // Choose a ratio close to screen ratio.
+      const device_ratio = this.device_height / this.device_width;
+      var delta = 999,
+          ratio = '1:1';
+      for (var i in ratios) {
+        const curRatio = ratios[i].split(':')[0] / ratios[i].split(':')[1]
+        if (Math.abs(curRatio - device_ratio) < delta) {
+          delta = Math.abs(curRatio - device_ratio);
+          ratio = ratios[i];
+        }
+      }
+
+      // Compute negative margins.
+      const newWidth = this.device_height * (parseInt(ratio.split(':')[1], 10) / parseInt(ratio.split(':')[0], 10));
+      this.setState({...this.state, 
+        ratio:ratio, 
+        widthOffset:-((newWidth - this.device_width) /2),
+      }, function () {
+        console.log(this.state)
+      });
+    });
+ 
+    this.camera.getFOV().then((data) => {
+      // console.log('gotFOV');
+      // console.log(data);
+      this.getFOVCallback( data[0] );
+    }).catch(err =>  {
+      // Cam not yet initialised, try again.
+      // console.log('getFOV', err);
+    });
+  };
+
+  takePicture = async (folder, orientation) => {
+    folder = RNFetchBlob.fs.dirs.DocumentDir +'/'+ folder +'/';
+    // console.log(folder);
+    // console.log('orientation', orientation);
+
+    if (this.camera) {
+
+      try {
+        const granted = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]);
+          // console.log(granted);
+
+        if (granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED
+        &&  granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED){
+     
+          try {
+            var picture = await this.camera.takePictureAsync({ 
+              quality: 0.7, 
+              base64: false, 
+
+              width: this.device_width + this.state.widthOffset*(-2) * PixelRatio.get(),
+              fixOrientation: true,
+            });
+            // console.log('Picture taken:');
+            // console.log(picture);
+              // height: 3024
+              // uri: "file:///data/user/0/com.sol/cache/Camera/2582d5c5-a8a0-4658-91b0-9ff14f501634.jpg"
+              // width: 4032
+
+            // Move picture to location folder.
+            folder += orientation.lat +'_'+ orientation.lon +'_'+ orientation.roll +'_'+ picture.width +'_'+ picture.height + '.jpg';
+            RNFetchBlob.fs.mv(
+              picture.uri.replace('file://',''),
+              folder,
+            ).then(() => {
+
+              // Send photo to webview.
+              RNFetchBlob.fs.readFile(folder, 'base64').then((base64) => {
+                this.refs.scene.postMessage( JSON.stringify({
+                  photo:{
+                    src:'data:image/jpeg;base64,' + base64,
+                    lat:orientation.lat,
+                    lon:orientation.lon,
+                    roll:orientation.roll,
+                    width:picture.width,
+                    height:picture.height,
+                  }
+                }));
+              })
+
+            }).catch((error) => {
+              alert('Move file ERROR');
+              console.log('Move file ',error);
+            }); 
+
+          } 
+          catch (err) {
+            // console.log('takePictureAsync ERROR: ', err);
+          }
+        } else {
+         // console.log('REFUSED');
+        }
+      } catch (err) {
+        // console.warn(err)
+      }
+    }
+  };
+
+  getWindowDimensions(event) {
+    this.device_width = event.nativeEvent.layout.width;
+    this.device_height = event.nativeEvent.layout.height;
+
+    if (typeof this.state.ratio != 'undefined') {
+      const newWidth = this.device_height * (parseInt(this.state.ratio.split(':')[1], 10) / parseInt(this.state.ratio.split(':')[0], 10));
+      this.setState({ widthOffset:-((newWidth - this.device_width) /2) });
+    }
+  }
+
   render () {
     return (
-      <View style={styles.container}>
+      <View 
+        style={styles.container}
+        onLayout={(event) => this.getWindowDimensions(event)}
+        >
+
+        {/*
         <CAM ref='cam'
           FOV = {false}
           getFOVCallback = { this.getFOVCallback }
           getNewPhoto = { this.getNewPhoto }
         />
-        <WebView   
-          ref = "scene"
-          mixedContentMode = 'always'
-          style = { styles.w_webView }
-          source = {source}
-          onMessage={(event)=> this.onMessage(event.nativeEvent.data)}
-        />
+        */}
+        <RNCamera
+          ref={ref => {
+            this.camera = ref;
+          }}
+          style = {[styles.cam, {left: this.state.widthOffset , right:this.state.widthOffset}]}
+          type={RNCamera.Constants.Type.back}
 
-        <DeviceOrientationTextView ref="deviceOrientation"/>
+          flashMode={RNCamera.Constants.FlashMode.off}
+          permissionDialogTitle={'Permission to use camera'}
+          permissionDialogMessage={'We need your permission to use your camera phone'}
+
+          autoFocus ={RNCamera.Constants.AutoFocus.off}
+          focusDepth = {1}
+          onCameraReady =  { () => this.onCameraReady() } 
+          ratio = {this.state.ratio}
+          >
+          <WebView   
+            ref = "scene"
+            mixedContentMode = 'always'
+            style = { styles.w_webView }
+            source = {source}
+            onMessage={(event)=> this.onMessage(event.nativeEvent.data)}
+          />
+        </RNCamera>
 
         <CONTROLS
           ref="CONTROLS"
@@ -546,7 +667,9 @@ export default class MotionManager extends Component {
           onSearchLocation = { this.onSearchLocation }
           onBackButton = { this.backButton }
         />
-  
+
+        <DeviceOrientationTextView ref="deviceOrientation"/>
+
         <LOCATIONS
           ref = "LOCATIONS"
           curLoc = {false}
@@ -555,7 +678,6 @@ export default class MotionManager extends Component {
         />
         
         <INFOS ref="INFOS"/>
-
         <ExitModal ref="EXITMODAL"/>
         <GeolocErrorModal ref="GEOLOCERRORMODAL"/>
 
@@ -570,16 +692,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor:'rgba(52,52,255,0)',
   },
-
-  w_webView:{
-    // alignSelf: 'stretch',
-    // flex: 1,
-    backgroundColor:'rgba(0,0,0,0)',
-    position: 'absolute',
-    top:0,
+  cam: {
+    position:'absolute',
     left:0,
-    bottom:0,
     right:0,
+    top:0,
+    bottom:0,
+    flex: 1,
+    backgroundColor:'black',
+  },
+  w_webView:{
+    alignSelf: 'stretch',
+    flex: 1,
+    backgroundColor:'rgba(0,0,0,0)',
   },
 
   targetContainer:{

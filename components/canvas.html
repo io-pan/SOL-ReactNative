@@ -160,8 +160,8 @@
 
         function waitWebGL(cb){
             if (webglAvailable() && window.innerWidth && window.innerHeight) {
-                SCREEN_WIDTH = window.screen.width,
-                SCREEN_HEIGHT = window.screen.height,
+                SCREEN_WIDTH = window.innerWidth,
+                SCREEN_HEIGHT = window.innerHeight,
                 cb();
             }
             else {
@@ -441,11 +441,22 @@
 
                     else if (propertyName == 'photo') {
                         var photoDistance = groundRadius+20,
+                            // Considering photo and screen ratios are equal, fit photo to screen:
                             H = 2 * photoDistance * Math.tan(THREE.Math.degToRad(canvasData.FOV/2)),
                             W = H * SCREEN_WIDTH / SCREEN_HEIGHT,
                             planeTexture = new THREE.Texture(),
-                            geometry = new THREE.PlaneGeometry(W,H),
                             image = new Image();
+
+                        // Should test which photo dimension is wider/tighter than screen. 
+                        // Consider photo width is wider than screen.
+                        window.postMessage( JSON.stringify( {'debug': {
+sw:SCREEN_WIDTH,
+sh:SCREEN_HEIGHT, x:window.devicePixelRatio ,  p:jsonData.photo.height
+                        }} ) );
+
+                         H = H * SCREEN_HEIGHT * window.devicePixelRatio / jsonData.photo.height;
+                        // W = jsonData.photo.height * SCREEN_HEIGHT / jsonData.photo.width;
+                        var geometry = new THREE.PlaneGeometry(W,H);
 
                         image.src = jsonData.photo.src;
                         planeTexture.image = image;
