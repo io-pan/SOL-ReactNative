@@ -259,7 +259,10 @@ class GeolocErrorModal extends Component {
 export default class MotionManager extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      ratio: undefined,
+      remountCamera: false,
+    }
 
     this.webViewBridgeReady = false;
     this.curLoc = {};
@@ -280,6 +283,14 @@ export default class MotionManager extends Component {
     else {
       this.refs.EXITMODAL.show();
       return true;
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.remountCamera) {
+      // setTimeout(() => {
+          this.setState({ remountCamera: false })
+      // }, 1);
     }
   }
 
@@ -498,47 +509,48 @@ export default class MotionManager extends Component {
     }
   }
 
+  onCameraReady = async () => {
 
-  onCameraReady() {
-    // console.log('onCameraReady');
-
+    console.log('onCameraReady' + this.state.ratio);
     // this.camera.getAvailablePictureSizes().then((sizes) => {
     //   console.log('getAvailablePictureSizes', sizes);
     // });
+    if (!this.state.ratio && this.camera) {
 
-    this.camera.getSupportedRatiosAsync().then((ratios) => {
-      // console.log('getSupportedRatiosAsync', ratios);
+      this.camera.getSupportedRatiosAsync().then((ratios) => {
+        // console.log('getSupportedRatiosAsync', ratios);
 
-      // Choose a ratio close to screen ratio.
-      const device_ratio = this.device_height / this.device_width;
-      var delta = 999,
-          ratio = '1:1';
-      for (var i in ratios) {
-        const curRatio = ratios[i].split(':')[0] / ratios[i].split(':')[1]
-        if (Math.abs(curRatio - device_ratio) < delta) {
-          delta = Math.abs(curRatio - device_ratio);
-          ratio = ratios[i];
+        // Choose a ratio close to screen ratio.
+        const device_ratio = this.device_height / this.device_width;
+        var delta = 999,
+            ratio = '1:1';
+        for (var i in ratios) {
+          const curRatio = ratios[i].split(':')[0] / ratios[i].split(':')[1]
+          if (Math.abs(curRatio - device_ratio) < delta) {
+            delta = Math.abs(curRatio - device_ratio);
+            ratio = ratios[i];
+          }
         }
-      }
-
-      // Compute negative margins.
-      const newWidth = this.device_height * (parseInt(ratio.split(':')[1], 10) / parseInt(ratio.split(':')[0], 10));
-      this.setState({...this.state, 
-        ratio:ratio, 
-        widthOffset:-((newWidth - this.device_width) /2),
-      }, function () {
-        console.log(this.state)
+        // Compute negative margins.
+        const newWidth = this.device_height * (parseInt(ratio.split(':')[1], 10) / parseInt(ratio.split(':')[0], 10));
+        this.setState({...this.state, 
+          ratio:ratio, 
+          widthOffset:-((newWidth - this.device_width) /2),
+          remountCamera: true,
+        }, function () {
+          console.log(this.state)
+        });
       });
-    });
- 
-    this.camera.getFOV().then((data) => {
-      // console.log('gotFOV');
-      // console.log(data);
-      this.getFOVCallback( data[0] );
-    }).catch(err =>  {
-      // Cam not yet initialised, try again.
-      // console.log('getFOV', err);
-    });
+    
+      this.camera.getFOV().then((data) => {
+        // console.log('gotFOV');
+        // console.log(data);
+        this.getFOVCallback( data[0] );
+      }).catch(err =>  {
+        // Cam not yet initialised, try again.
+        // console.log('getFOV', err);
+      });
+    }
   };
 
   takePicture = async (folder, orientation) => {
@@ -614,40 +626,26 @@ export default class MotionManager extends Component {
     this.device_width = event.nativeEvent.layout.width;
     this.device_height = event.nativeEvent.layout.height;
 
-    if (typeof this.state.ratio != 'undefined') {
+    if (this.state.ratio) {
       const newWidth = this.device_height * (parseInt(this.state.ratio.split(':')[1], 10) / parseInt(this.state.ratio.split(':')[0], 10));
       this.setState({ widthOffset:-((newWidth - this.device_width) /2) });
     }
   }
 
-  render () {
-    return (
-      <View 
-        style={styles.container}
-        onLayout={(event) => this.getWindowDimensions(event)}
-        >
-
-        {/*
-        <CAM ref='cam'
-          FOV = {false}
-          getFOVCallback = { this.getFOVCallback }
-          getNewPhoto = { this.getNewPhoto }
-        />
-        */}
+  renderCamera() {
+    return(
+      !this.state.remountCamera && (
         <RNCamera
-          ref={ref => {
-            this.camera = ref;
-          }}
+          ref={cam => (this.camera = cam)}
           style = {[styles.cam, {left: this.state.widthOffset , right:this.state.widthOffset}]}
           type={RNCamera.Constants.Type.back}
-
           flashMode={RNCamera.Constants.FlashMode.off}
           permissionDialogTitle={'Permission to use camera'}
           permissionDialogMessage={'We need your permission to use your camera phone'}
-
           autoFocus ={RNCamera.Constants.AutoFocus.off}
           focusDepth = {1}
-          onCameraReady =  { () => this.onCameraReady() } 
+
+          onCameraReady = {this.onCameraReady} 
           ratio = {this.state.ratio}
           >
           <WebView   
@@ -658,6 +656,18 @@ export default class MotionManager extends Component {
             onMessage={(event)=> this.onMessage(event.nativeEvent.data)}
           />
         </RNCamera>
+      )
+    );
+  }
+
+  render() {
+    return (
+      <View 
+        style={styles.container}
+        onLayout={(event) => this.getWindowDimensions(event)}
+        >
+
+        {this.renderCamera()}
 
         <CONTROLS
           ref="CONTROLS"
