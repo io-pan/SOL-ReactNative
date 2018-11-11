@@ -422,6 +422,7 @@ export default class MotionManager extends Component {
     var d = new Date(),
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds()));
 
+    this.fov = angle;
     if (this.webViewBridgeReady) {
       this.refs.scene.postMessage( JSON.stringify({ 
         FOV:angle, // horizontal fov
@@ -442,7 +443,7 @@ export default class MotionManager extends Component {
       var promises = [];
       for(var i=0; i<files.length; i++) {
         const metaData = files[i].slice(0,-4).split('_');
-         console.log(currentFolder+'/'+files[i]);
+        // console.log(currentFolder+'/'+files[i]);
         promises[i] = RNFetchBlob.fs.readFile(currentFolder+'/'+files[i], 'base64')
           .then((data) => {
             this.refs.scene.postMessage( JSON.stringify({
@@ -453,6 +454,7 @@ export default class MotionManager extends Component {
                 roll:metaData[2],
                 width:metaData[3],
                 height:metaData[4],
+                fov:metaData[5],
               }
             }));
           })
@@ -476,16 +478,17 @@ export default class MotionManager extends Component {
   onMessage(webViewData) {
     webViewData = JSON.parse(webViewData);
     for (var propertyName in webViewData) {
-   
       if (propertyName=='debug'){
         console.log(webViewData.debug);
         continue;
       } 
 
       else if (propertyName == 'WebViewReady') {
-        this.webViewBridgeReady = true;
-        this.onWebviewLoad();
-        this.props.onWebviewLoad();
+        if (!this.webViewBridgeReady){
+          this.webViewBridgeReady = true;
+          this.onWebviewLoad();
+          this.props.onWebviewLoad();
+        }
       }
 
       else if (propertyName == 'drawCompleted') {
@@ -510,11 +513,10 @@ export default class MotionManager extends Component {
   }
 
   onCameraReady = async () => {
-
-    console.log('onCameraReady' + this.state.ratio);
     // this.camera.getAvailablePictureSizes().then((sizes) => {
     //   console.log('getAvailablePictureSizes', sizes);
     // });
+
     if (!this.state.ratio && this.camera) {
 
       this.camera.getSupportedRatiosAsync().then((ratios) => {
@@ -538,7 +540,7 @@ export default class MotionManager extends Component {
           widthOffset:-((newWidth - this.device_width) /2),
           remountCamera: true,
         }, function () {
-          console.log(this.state)
+          // console.log(this.state);
         });
       });
     
@@ -600,13 +602,14 @@ export default class MotionManager extends Component {
                     roll:orientation.roll,
                     width:picture.width,
                     height:picture.height,
+                    fov:this.fov,
                   }
                 }));
               })
 
             }).catch((error) => {
               alert('Move file ERROR');
-              console.log('Move file ',error);
+              // console.log('Move file ',error);
             }); 
 
           } 

@@ -376,6 +376,7 @@ class LocationEdit extends Component {
     RNFetchBlob.fs.unlink(currentFolder+'/'+fileName).then(() => {
       RNFetchBlob.fs.ls(currentFolder).then((files) => {
         this.setState({photoList:files});
+        // TODO: update webview.
       });
     });
   }
@@ -415,11 +416,22 @@ class LocationEdit extends Component {
             >
             { this.state.photoList.map((value, index) => {
               return(
-                <View key={index} style={{ margin:1, width:deviceWidth/2 - 2,flexDirection:'row',marginBottom:2,
-                flexWrap: 'nowrap' }}>
+                <View 
+                  key={index}
+                  style={{ 
+                    margin:1, 
+                    width:deviceWidth/2 - 2,
+                    flexDirection:'row',
+                    marginBottom:2,
+                    flexWrap: 'nowrap'
+                  }}
+                  >
 
                   <Image 
-                    style={{width:deviceWidth/2 - 2, height:(deviceWidth/2 - 2)*16/9}}
+                    style={{
+                      width: deviceWidth/2 - 2, 
+                      height: (deviceWidth/2 - 2) * value.slice(0,-4).split('_')[4] / value.slice(0,-4).split('_')[3],
+                    }}
                     source={{ uri:'file:///'+currentFolder+'/'+value, scale:1}}
                     resizeMode='contain'
                   />

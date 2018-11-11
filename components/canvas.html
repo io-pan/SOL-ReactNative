@@ -170,12 +170,20 @@
         }
 
         function waitPostMessageReady(cb) {
-            if (postMessage.length === 1) cb();
+            if (postMessage.length === 1) {
+                // Warn app that webview is ready. 
+                // ... but msg is not sent ... window.postMessage(JSON.stringify({'WebViewReady': true}));
+                cb();
+            }
             else setTimeout(function() { waitPostMessageReady(cb) }, 10);
         }
 
         // Wait for device camera FOV before running 3D scene.
         function waitForFOV() {
+
+            // Warn app that webview is ready. 
+            window.postMessage(JSON.stringify({'WebViewReady': true}));
+
             if (!canvasData.FOV || !canvasData.loc){
                 setTimeout(waitForFOV, 10);
             }
@@ -195,7 +203,11 @@
             // talk() which will call waitForFOV()
         
         // Communication with React-Native component.
-        function talk (){
+        function talk() {
+            
+            setTimeout(function(){
+
+            },10)
 
             // Send device orientation up to RN. 
             setInterval(function(){
@@ -449,10 +461,13 @@
 
                         // Should test which photo dimension is wider/tighter than screen. 
                         // Consider photo width is wider than screen.
-                        window.postMessage( JSON.stringify( {'debug': {
-sw:SCREEN_WIDTH,
-sh:SCREEN_HEIGHT, x:window.devicePixelRatio ,  p:jsonData.photo.height
-                        }} ) );
+//                         window.postMessage( JSON.stringify( {'debug': {
+// screenW:SCREEN_WIDTH,
+// screenH:SCREEN_HEIGHT,
+// devicePixelRatiox:window.devicePixelRatio ,  
+// photoW:jsonData.photo.width,
+// photoH:jsonData.photo.height
+//                         }} ) );
 
                          H = H * SCREEN_HEIGHT * window.devicePixelRatio / jsonData.photo.height;
                         // W = jsonData.photo.height * SCREEN_HEIGHT / jsonData.photo.width;
@@ -507,10 +522,10 @@ sh:SCREEN_HEIGHT, x:window.devicePixelRatio ,  p:jsonData.photo.height
                    window.postMessage(JSON.stringify( {'drawCompleted':true} ));                     
                 }
             });
-            waitForFOV();
 
-            // Warn app that webview is ready. 
-            window.postMessage(JSON.stringify({'WebViewReady': true}));
+         
+
+            waitForFOV();
         }
        
         // 3D scene initialisation.
@@ -798,7 +813,7 @@ sh:SCREEN_HEIGHT, x:window.devicePixelRatio ,  p:jsonData.photo.height
                 }
             }
             scene.add(solsticesPathGroup);
-            
+
             // Display background photos.
             scene.add(bgPhotosGroup);
             
