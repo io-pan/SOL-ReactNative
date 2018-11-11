@@ -442,6 +442,8 @@ export default class MotionManager extends Component {
     RNFetchBlob.fs.ls(currentFolder).then((files) => {
       var promises = [];
       for(var i=0; i<files.length; i++) {
+
+        console.log(files[i]);
         const metaData = files[i].slice(0,-4).split('_');
         // console.log(currentFolder+'/'+files[i]);
         promises[i] = RNFetchBlob.fs.readFile(currentFolder+'/'+files[i], 'base64')
@@ -586,7 +588,13 @@ export default class MotionManager extends Component {
               // width: 4032
 
             // Move picture to location folder.
-            folder += orientation.lat +'_'+ orientation.lon +'_'+ orientation.roll +'_'+ picture.width +'_'+ picture.height + '.jpg';
+            folder +=
+              orientation.lat +'_'+ 
+              orientation.lon +'_'+ 
+              orientation.roll +'_'+ 
+              picture.width +'_'+ 
+              picture.height +'_'+ 
+              this.fov + '.jpg';
             RNFetchBlob.fs.mv(
               picture.uri.replace('file://',''),
               folder,

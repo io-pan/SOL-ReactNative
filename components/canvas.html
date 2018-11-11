@@ -204,11 +204,6 @@
         
         // Communication with React-Native component.
         function talk() {
-            
-            setTimeout(function(){
-
-            },10)
-
             // Send device orientation up to RN. 
             setInterval(function(){
                 if (typeof controls.orientation !== "undefined"
@@ -461,13 +456,14 @@
 
                         // Should test which photo dimension is wider/tighter than screen. 
                         // Consider photo width is wider than screen.
-//                         window.postMessage( JSON.stringify( {'debug': {
-// screenW:SCREEN_WIDTH,
-// screenH:SCREEN_HEIGHT,
-// devicePixelRatiox:window.devicePixelRatio ,  
-// photoW:jsonData.photo.width,
-// photoH:jsonData.photo.height
-//                         }} ) );
+                        window.postMessage( JSON.stringify( {'debug': {
+screenW:SCREEN_WIDTH,
+screenH:SCREEN_HEIGHT,
+devicePixelRatiox:window.devicePixelRatio ,  
+photoW:jsonData.photo.width,
+photoH:jsonData.photo.height,
+photoFOV:jsonData.photo.fov,
+                        }} ) );
 
                          H = H * SCREEN_HEIGHT * window.devicePixelRatio / jsonData.photo.height;
                         // W = jsonData.photo.height * SCREEN_HEIGHT / jsonData.photo.width;
