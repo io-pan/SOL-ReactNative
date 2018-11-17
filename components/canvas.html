@@ -448,25 +448,12 @@
 
                     else if (propertyName == 'photo') {
                         var photoDistance = groundRadius+20,
-                            // Considering photo and screen ratios are equal, fit photo to screen:
+                            // Considering photo and canvas ratios are equal, fit photo to canvas:
                             H = 2 * photoDistance * Math.tan(THREE.Math.degToRad(canvasData.FOV/2)),
                             W = H * SCREEN_WIDTH / SCREEN_HEIGHT,
                             planeTexture = new THREE.Texture(),
                             image = new Image();
 
-                        // Should test which photo dimension is wider/tighter than screen. 
-                        // Consider photo width is wider than screen.
-                        window.postMessage( JSON.stringify( {'debug': {
-screenW:SCREEN_WIDTH,
-screenH:SCREEN_HEIGHT,
-devicePixelRatiox:window.devicePixelRatio ,  
-photoW:jsonData.photo.width,
-photoH:jsonData.photo.height,
-photoFOV:jsonData.photo.fov,
-                        }} ) );
-
-                         H = H * SCREEN_HEIGHT * window.devicePixelRatio / jsonData.photo.height;
-                        // W = jsonData.photo.height * SCREEN_HEIGHT / jsonData.photo.width;
                         var geometry = new THREE.PlaneGeometry(W,H);
 
                         image.src = jsonData.photo.src;
@@ -487,7 +474,7 @@ photoFOV:jsonData.photo.fov,
                             -photoDistance * Math.cos(THREE.Math.degToRad(jsonData.photo.lat)) * Math.sin(THREE.Math.degToRad(jsonData.photo.lon))
                         );
                         photo.lookAt(new THREE.Vector3(0,0,0));
-                        photo.rotation.z +=  THREE.Math.degToRad(jsonData.photo.roll);
+                        photo.rotation.z += THREE.Math.degToRad(jsonData.photo.roll);
                         bgPhotosGroup.add( photo );
                     }
 
