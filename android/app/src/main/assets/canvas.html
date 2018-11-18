@@ -160,8 +160,8 @@
 
         function waitWebGL(cb){
             if (webglAvailable() && window.innerWidth && window.innerHeight) {
-                SCREEN_WIDTH = window.screen.width,
-                SCREEN_HEIGHT = window.screen.height,
+                SCREEN_WIDTH = window.innerWidth;
+                SCREEN_HEIGHT = window.innerHeight;
                 cb();
             }
             else {
@@ -170,20 +170,28 @@
         }
 
         function waitPostMessageReady(cb) {
-            if (postMessage.length === 1) cb();
+            if (postMessage.length === 1) {
+                // Warn app that webview is ready. 
+                // ... but msg is not sent ... window.postMessage(JSON.stringify({'WebViewReady': true}));
+                cb();
+            }
             else setTimeout(function() { waitPostMessageReady(cb) }, 10);
         }
 
         // Wait for device camera FOV before running 3D scene.
         function waitForFOV() {
+
+            // Warn app that webview is ready. 
+            window.postMessage(JSON.stringify({'WebViewReady': true}));
+
             if (!canvasData.FOV || !canvasData.loc){
                 setTimeout(waitForFOV, 10);
             }
             else {
-                updSunPos();
-                updDayPath();
-                updYearPath();
-                updSolsticesPath();
+                // updSunPos();
+                // updDayPath();
+                // updYearPath();
+                // updSolsticesPath();
                 animate();
             }
         }
@@ -195,8 +203,7 @@
             // talk() which will call waitForFOV()
         
         // Communication with React-Native component.
-        function talk (){
-
+        function talk() {
             // Send device orientation up to RN. 
             setInterval(function(){
                 if (typeof controls.orientation !== "undefined"
@@ -441,19 +448,24 @@
 
                     else if (propertyName == 'photo') {
                         var photoDistance = groundRadius+20,
+                            // Considering photo and canvas ratios are equal, fit photo to canvas:
                             H = 2 * photoDistance * Math.tan(THREE.Math.degToRad(canvasData.FOV/2)),
                             W = H * SCREEN_WIDTH / SCREEN_HEIGHT,
                             planeTexture = new THREE.Texture(),
-                            geometry = new THREE.PlaneGeometry(W,H),
                             image = new Image();
-                        
+
+                        var geometry = new THREE.PlaneGeometry(W,H);
+
                         image.src = jsonData.photo.src;
                         planeTexture.image = image;
                         planeTexture.repeat.set(1, 1);
                         planeTexture.wrapS = planeTexture.wrapT = THREE.MirroredRepeatWrapping;
                         planeTexture.needsUpdate = true;
  
-                        var material = new THREE.MeshBasicMaterial({ 'map':planeTexture }),
+                        var material = new THREE.MeshBasicMaterial({
+                                'map':planeTexture ,
+                                // "side": THREE.DoubleSide, 
+                            }),
                             photo = new THREE.Mesh(geometry, material);
 
                         photo.position.set(
@@ -462,7 +474,7 @@
                             -photoDistance * Math.cos(THREE.Math.degToRad(jsonData.photo.lat)) * Math.sin(THREE.Math.degToRad(jsonData.photo.lon))
                         );
                         photo.lookAt(new THREE.Vector3(0,0,0));
-                        photo.rotation.z +=  THREE.Math.degToRad(jsonData.photo.roll);
+                        photo.rotation.z += THREE.Math.degToRad(jsonData.photo.roll);
                         bgPhotosGroup.add( photo );
                     }
 
@@ -493,10 +505,10 @@
                    window.postMessage(JSON.stringify( {'drawCompleted':true} ));                     
                 }
             });
-            waitForFOV();
 
-            // Warn app that webview is ready. 
-            window.postMessage(JSON.stringify({'WebViewReady': true}));
+         
+
+            waitForFOV();
         }
        
         // 3D scene initialisation.
@@ -784,7 +796,7 @@
                 }
             }
             scene.add(solsticesPathGroup);
-            
+
             // Display background photos.
             scene.add(bgPhotosGroup);
             
@@ -794,16 +806,16 @@
 
         // Regular three.js animate function.
         function animate(){
-            requestAnimationFrame( animate );
             controls.update();
             renderer.render( scene, camera );
+            requestAnimationFrame( animate );
         }
 
 
         // Update SUN position.
         function updSunPos() {
             var d0 = new Date(canvasData.sliderTime);
-            
+        
             hete = canvasData.loc.dst ? d0.dst()*3600 : 0;
             hete += canvasData.loc.gmt;
             d0.setUTCSeconds(d0.getUTCSeconds() - hete);

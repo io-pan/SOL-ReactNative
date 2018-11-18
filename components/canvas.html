@@ -160,8 +160,8 @@
 
         function waitWebGL(cb){
             if (webglAvailable() && window.innerWidth && window.innerHeight) {
-                SCREEN_WIDTH = window.innerWidth,
-                SCREEN_HEIGHT = window.innerHeight,
+                SCREEN_WIDTH = window.innerWidth;
+                SCREEN_HEIGHT = window.innerHeight;
                 cb();
             }
             else {
