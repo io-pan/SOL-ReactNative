@@ -262,6 +262,7 @@ export default class MotionManager extends Component {
     this.state = {
       ratio: undefined,
       remountCamera: false,
+      widthOffset: false,
     }
 
     this.webViewBridgeReady = false;
@@ -637,7 +638,7 @@ export default class MotionManager extends Component {
     this.device_width = event.nativeEvent.layout.width;
     this.device_height = event.nativeEvent.layout.height;
 
-    if (this.state.ratio) {
+    if (this.state.ratio && this.state.widthOffset===false) {
       const newWidth = this.device_height * (parseInt(this.state.ratio.split(':')[1], 10) / parseInt(this.state.ratio.split(':')[0], 10));
       this.setState({ widthOffset:-((newWidth - this.device_width) /2) });
     }
@@ -648,7 +649,7 @@ export default class MotionManager extends Component {
       !this.state.remountCamera && (
         <RNCamera
           ref={cam => (this.camera = cam)}
-          style = {[styles.cam, {left: this.state.widthOffset , right:this.state.widthOffset}]}
+          style = {[styles.cam, {left: this.state.widthOffset||0 , right:this.state.widthOffset||0}]}
           type={RNCamera.Constants.Type.back}
           flashMode={RNCamera.Constants.FlashMode.off}
           permissionDialogTitle={'Permission to use camera'}

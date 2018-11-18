@@ -155,7 +155,7 @@ class LocationEdit extends Component {
       .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.status=="OK") {
-          // console.log(responseJson.results[0].geometry.location);
+          // console.log('geocode', responseJson.results[0].geometry.location);
           this.setState({ 
             name: text,
             lat: responseJson.results[0].geometry.location.lat,
@@ -182,6 +182,7 @@ class LocationEdit extends Component {
             +'&key='+GOOGLE_APIKEY)
           .then((response) => response.json())
           .then((responseJson) => {
+            // console.log('timezone', responseJson);
             if(responseJson.status=="OK") {
               this.setState({ 
                 gmt: responseJson.rawOffset,
@@ -198,8 +199,8 @@ class LocationEdit extends Component {
           .catch((error) => { }); 
         }
         else {
-          console.log('api geocode ERROR:');
-          console.log(responseJson);
+          // console.log('api geocode ERROR:');
+          // console.log(responseJson);
           this.setState({ 
             name: strings.unknownplace,
             lat: 0,
@@ -209,7 +210,9 @@ class LocationEdit extends Component {
           })
         }
       })
-      .catch((error) => { console.log(error);  }); 
+      .catch((error) => { 
+        // console.log(error);
+      }); 
     }
   }
 
@@ -287,7 +290,7 @@ class LocationEdit extends Component {
       longitudeDelta: region.longitudeDelta,
     }); 
 
-    if (this.props.location.id < 0) {
+    if (this.props.location.id < 0 && region.latitude && region.longitude) {
       // Get place name
       fetch('https://maps.googleapis.com/maps/api/geocode/json?'
           +'latlng=' + region.latitude + ',' + region.longitude
@@ -313,8 +316,7 @@ class LocationEdit extends Component {
                     break;
             }
           }
-          console.log('geo code');
-          console.log(responseJson.results[0]);
+          // console.log('geo code', responseJson.results[0]);
           this.setState({ 
             name: (storableLocation.city
                   ? storableLocation.city : storableLocation.state)
@@ -322,11 +324,13 @@ class LocationEdit extends Component {
           });
         }
         else {
-          console.log('api geocode ERROR:');
-          console.log(responseJson);
+          // console.log('api geocode ERROR:');
+          // console.log(responseJson);
         }
       })
-      .catch((error) => { console.log(error);  }); 
+      .catch((error) => { 
+        // console.log(error);  
+      }); 
 
       // Get timezone
       var summerDate = new Date();
@@ -905,7 +909,7 @@ export default class GeolocationManager extends Component {
         this.forwardSelectedLocation(false);
       }
     } catch (err) {
-      console.warn(err)
+      // console.warn(err)
     }
   }
 
@@ -927,10 +931,10 @@ export default class GeolocationManager extends Component {
   }
 
   geoLocConfirmed() {
-    console.log(this.state.connected);
+    // console.log(this.state.connected);
     this.watchID = navigator.geolocation.watchPosition(
        (position) => {
-          console.log(position);
+          // console.log(position);
           navigator.geolocation.clearWatch(this.watchID);
           this.setState({
             searching: false,
@@ -996,11 +1000,13 @@ export default class GeolocationManager extends Component {
                   });
                 }
                 else {
-                  console.log('api geocode ERROR:');
-                  console.log(responseJson);
+                  // console.log('api geocode ERROR:');
+                  // console.log(responseJson);
                 }
               })
-              .catch((error) => { console.log(error);  }); 
+              .catch((error) => { 
+                // console.log(error);  
+              }); 
             }
           });
         },

@@ -391,7 +391,7 @@ class ToolBar extends Component {
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
       <View style={styles.panelTopBar}>
         <ScrollView horizontal={true} style={styles.panelTopBarScroll}>
