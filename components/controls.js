@@ -907,14 +907,24 @@ class SceneLayout extends Component {
 
   onToggleSceneLayout(sceneLayout) {
     var val = this.state.sceneLayout;
+
+    // Always show path when showing text.
+    if (sceneLayout=='months' && !val.months) {
+      val.year = true;
+    }
+    if (sceneLayout=='hours' && !val.hours) {
+      val.day = true;
+    }
     val[sceneLayout] = !val[sceneLayout];
 
+    // Hide text when hidding path.
     if (!val.day) {
       val.hours = false;
     }
     if (!val.year) {
       val.months = false;
     }
+
     this.setState({sceneLayout:val});
     this.props.onSceneLayout('sceneLayout',val);
 
