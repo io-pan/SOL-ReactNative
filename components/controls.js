@@ -12,6 +12,7 @@ import {
   Dimensions,
   Alert,
   NetInfo,
+  AsyncStorage,
 } from 'react-native';
 
 import DatePicker from 'react-native-datepicker';
@@ -143,7 +144,6 @@ class ToolBar extends Component {
     this.toValue = 1;
   }
 
-
   componentDidMount() {
     NetInfo.addEventListener(
       'connectionChange',
@@ -156,8 +156,8 @@ class ToolBar extends Component {
   }
   componentWillUnmount() {
     NetInfo.removeEventListener(
-        'connectionChange',
-        this._handleConnectivityChange
+      'connectionChange',
+      this._handleConnectivityChange
     );
   }
 
@@ -816,7 +816,7 @@ class ColorPicker extends Component {
   render() {
     // if (!this.state.visible) return null;
     return(
-      <Animated.View style={{backgroundColor:this.state.color, height: this.state.bounceValue}}>
+      <Animated.View style={{overflow:'hidden', backgroundColor:this.state.color, height: this.state.bounceValue}}>
         <View style={{flexDirection:'row', flex:1, paddingLeft:15, paddingRight:15}}>
           { this.gradiant }
         </View>
@@ -842,7 +842,8 @@ class ColorPicker extends Component {
 class SceneLayout extends Component {
   constructor(props) {
     super(props);
-    this.state={
+
+    this.state = {
       bounceValue: new Animated.Value(0),
       sceneLayout:{
         day:true,
@@ -854,20 +855,35 @@ class SceneLayout extends Component {
         ground:true,
         photos:true,
       },
-    }
-    this.sceneColors={
-        day:'#fffb72',
-        year:'#fffb72',
-        hours:'#fffb72',
-        months:'#fffb72',
-        solstices:'#fffb72',
-    },
+    };
+
+    this.sceneColors = {
+      day:'#fffb72',
+      year:'#fffb72',
+      hours:'#fffb72',
+      months:'#fffb72',
+      solstices:'#fffb72',
+    };
     this.visible = false;
     this.panelHeight = 102;
-    // this.bounceValue = 0;
-    // this.state.bounceValue.addListener(({value}) => this.bounceValue = value);
   }
   
+  componentDidMount(){
+    // Get stored layout & colors.
+    AsyncStorage.getItem('sceneLayout', (err, sceneLayout) => {
+      if (sceneLayout !== null) {
+        this.setState({ sceneLayout:JSON.parse(sceneLayout)});
+        this.props.onSceneLayout('sceneLayout', JSON.parse(sceneLayout));
+      }
+    });
+    AsyncStorage.getItem('sceneColors', (err, sceneColors) => {
+      if (sceneColors !== null) {
+        this.sceneColors = JSON.parse(sceneColors);
+        this.props.onSceneLayout('sceneColors', this.sceneColors);
+      }
+    });
+  }
+
   setVisible(visible) {
    if (typeof visible == 'undefined') {
       this.visible = !this.visible;
@@ -901,6 +917,8 @@ class SceneLayout extends Component {
     }
     this.setState({sceneLayout:val});
     this.props.onSceneLayout('sceneLayout',val);
+
+    AsyncStorage.setItem('sceneLayout', JSON.stringify(val));
   }
 
   editColor(item) {
@@ -924,6 +942,7 @@ class SceneLayout extends Component {
   colorChanged(item, color) {
     this.sceneColors[item] = color;
     this.props.onSceneLayout('sceneColors',this.sceneColors);
+    AsyncStorage.setItem('sceneColors', JSON.stringify(this.sceneColors));
   }
 
   render() {
@@ -936,6 +955,7 @@ class SceneLayout extends Component {
         <View style={styles.collapsiblePanelContainer}>
 
           <ColorPicker
+            style={[styles.collapsiblePanelLine, {height:10}]}
             ref="colorPicker"
             colorChanged={(item, color) => this.colorChanged(item, color)}
           />

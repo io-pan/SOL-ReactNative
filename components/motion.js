@@ -369,19 +369,23 @@ export default class MotionManager extends Component {
       this.refs.INFOS.setVisible();
     }
 
+    // Send data to webview.
     else {
-      
-      if(key=='view' && value=='gyroscope'){
+
+      if (key=='view' && value=='gyroscope'){
         this.refs.scene.postMessage( JSON.stringify({ 
           [key]:value ,
           'azimuthReset':this.initialAzimuth
         }));
       }
-      else {
+
+      else if (this.webViewBridgeReady) {
         this.refs.scene.postMessage( JSON.stringify({ [key]:value }));
       }
+      else{
+       this.toBeSent[key] = value;
+      }
     }
-
   }
 
   onToggleLocationList = (visible) => {
