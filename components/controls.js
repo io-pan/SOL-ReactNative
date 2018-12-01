@@ -480,7 +480,7 @@ class ToolBar extends Component {
             margin={0}
             marginLeft={2}
 
-            color= { this.state.visible_sceneLayout ? colorDark : colorLight }
+            color= {colorLight}
             backgroundColor={ this.state.visible_sceneLayout ? backgroundLight : backgroundDark }
             onPress={ () => this.onToggleButton('visible_sceneLayout') }
           />
