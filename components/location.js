@@ -61,10 +61,6 @@ const deviceWidth = Dimensions.get('window').width,
           adddate:'Creation Date',
 
           northpole:'North Pole',
-          arcticcircle:'Arctic Circle',
-          cancertropic:'Tropic of Cancer',
-          equator:'Equator',
-          capricorntropic:'Tropic of Capricorn',
 
           add:'Add',
           delete:'Delete',
@@ -87,10 +83,6 @@ const deviceWidth = Dimensions.get('window').width,
           adddate:'Date d\'ajout',
 
           northpole:'Pôle Nord',
-          arcticcircle:'Cercle Arctique',
-          cancertropic:'Tropique du Cancer',
-          equator:'Equateur',
-          capricorntropic:'Tropique du Capricorne',
 
           add:'Ajouter',
           delete:'Supprimer',
@@ -1051,7 +1043,7 @@ export default class GeolocationManager extends Component {
             "date": addDate-1,
           },{
             "id":1,
-            'name':'Grímsey ('+strings.arcticcircle+')',
+            'name':'Grímsey',
             'lat':  66.541948,
             'lon': -18.002125,
             "gmt": 0,
@@ -1067,7 +1059,7 @@ export default class GeolocationManager extends Component {
             "date": addDate-3,
           },{
             "id":3,
-            'name': 'Mayapur ('+strings.cancertropic+')',
+            'name': 'Mayapur',
             'lat': 23.423201,
             'lon': 88.388268,
             "gmt": 19800,
@@ -1075,7 +1067,7 @@ export default class GeolocationManager extends Component {
             "date": addDate-4,
           },{
             "id":4,
-            'name':'Singapore ('+strings.equator+')',
+            'name':'Singapore',
             'lat':   1.290270,
             'lon': 103.851959,
             "gmt": 27000,
@@ -1083,7 +1075,7 @@ export default class GeolocationManager extends Component {
             "date": addDate-5,
           },{
             "id":5,
-            'name':'Antofagasta ('+strings.capricorntropic+')',
+            'name':'Antofagasta',
             'lat': -23.650000,
             'lon': -70.400002,
             "gmt": -14400,

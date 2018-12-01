@@ -66,6 +66,10 @@
                     "vertexColors": false, "specular": 1907997, "name": "nord", "depthTest": true, "depthWrite": true,  "emissive": 0,  "shininess": 50, "type": "MeshPhongMaterial",
                     "color": canvasData.sceneColors.axisN,
                 }),
+                materialMeridians = new THREE.MeshPhongMaterial( {
+                    "vertexColors": false, "specular": 1907997, "name": "nord", "depthTest": true, "depthWrite": true,  "emissive": 0,  "shininess": 50, "type": "MeshPhongMaterial",
+                    "color": 0x888888,
+                }),
                 materialDay = new THREE.MeshPhongMaterial({
                     "vertexColors": false, "specular": 1907997, "depthTest": true, "depthWrite": true, "emissive": 0, "shininess": 50, "type": "MeshPhongMaterial", "blending": "NormalBlending", "side": THREE.DoubleSide,
                     "color": canvasData.sceneColors.day,
@@ -105,6 +109,8 @@
             solsticesPath = [],
             solsticesPathGroup = new THREE.Object3D(),
             bgPhotosGroup = new THREE.Object3D(),
+            compassGrey = new THREE.Object3D(),
+            compassCross = new THREE.Object3D(),
             compass = new THREE.Object3D(),
             ground = new THREE.Object3D(),
             horizon = new THREE.Object3D(),
@@ -251,6 +257,9 @@
                             controls.dispose();
 
                             if (jsonData.view == 'orbit') {
+                                compass.add( compassCross );
+                                compass.remove( compassGrey );
+
                                 container.style.background = '#0a141e'; // Hide device camera preview.
                                 camera = new THREE.OrthographicCamera( SCREEN_WIDTH / - 4, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_HEIGHT / -4, 0.01, 10000 );
                                 camera.position.set(-400, 300, 100);    
@@ -258,7 +267,9 @@
                                 controls = new THREE.OrbitControls( camera );
                             }
                             else {                                   
-                                
+                                compass.remove( compassCross );
+                                compass.add( compassGrey );
+
                                 camera = new THREE.PerspectiveCamera(canvasData.FOV, SCREEN_WIDTH / SCREEN_HEIGHT, 0.01, 1000 );
                                 camera.position.set(0, 0, 0);
 
@@ -587,9 +598,40 @@
             horizon = new THREE.Mesh(geometry, materialNord);
             horizon.position.set(0, 0, 0);
             horizon.rotation.x = Math.PI / 2;
+            compass.add(horizon);
+
+            // Meridians.
+            var geometry = new THREE.TorusGeometry( groundRadius, 0.1, 6, 90, Math.PI/2 );
+            for (i=1; i<24; i++){
+                if(i%6!=0){
+                    let meridian = new THREE.Mesh(geometry, materialMeridians);
+                    meridian.position.set(0, 0, 0);
+                    meridian.rotation.y =  i * 2*Math.PI /24;
+                    compassGrey.add(meridian);
+                }
+            }
+
+            // Parallels.
+            horizon.position.set(0, 0, 0);
+            horizon.rotation.x = Math.PI / 2;
             horizon.castShadow = true;
             horizon.receiveShadow = true;
             compass.add(horizon);
+
+            for (i=1; i<12; i++){
+                if(i%6!=0){
+                    let angle = i * 2*Math.PI /24;
+                    let radius = Math.cos(angle)*groundRadius;
+                    let elev = Math.sin(angle)*groundRadius;
+                    let parallelGeometry = new THREE.TorusGeometry( radius, 0.1, 6, 90, Math.PI * 2 );
+                    let parallel = new THREE.Mesh(parallelGeometry, materialMeridians);
+                    
+                    parallel.rotation.x = Math.PI / 2;
+                    parallel.position.set(0, elev, 0);
+                    compassGrey.add(parallel);
+                }
+            }
+            compass.add(compassGrey);
 
             // North Axis.
             var geometry = new THREE.TorusGeometry( groundRadius, 0.2, 6, 90, Math.PI/2 );
@@ -603,7 +645,7 @@
             cylinder.position.set(-groundRadius/2, -0.4, 0);
             cylinder.rotation.z = Math.PI / 2;
             cylinder.rotation.x = Math.PI/6;
-            compass.add( cylinder );
+            compassCross.add( cylinder );
 
             // North text.
             var txtGeometry = new THREE.TextGeometry( north[canvasData.lang], {
@@ -644,7 +686,7 @@
             cylinder.position.set(groundRadius/2, -0.4, 0);
             cylinder.rotation.z = Math.PI / 2;
             cylinder.rotation.x = Math.PI/6;
-            compass.add( cylinder );
+            compassCross.add( cylinder );
 
             // East/West axis.
             var material = new THREE.MeshPhongMaterial( {
@@ -670,7 +712,8 @@
             cylinder.rotation.x = Math.PI /2;
             cylinder.rotation.z = Math.PI ;
             cylinder.rotation.y = Math.PI ;
-            compass.add( cylinder );
+            compassCross.add( cylinder );
+            // compass.add( compassCross );
             scene.add( compass );
 
             // Suns current position.
