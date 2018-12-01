@@ -191,10 +191,6 @@ class ToolBar extends Component {
     }).start();
   }
 
-  setLocationId(id) {
-    this.setState({locationId:id});
-  }
-
   onToggleButton(key, value){
     if (typeof value == 'undefined') {
       if (key=='view') {
@@ -1066,6 +1062,7 @@ class LocationPicker extends Component {
   }
 
   setLocation(location) {
+    // Alert.alert(location.name + ' '+ location.id);
     this.setState({
       loc:location, 
     });
@@ -1079,20 +1076,20 @@ class LocationPicker extends Component {
           name='plus-circle' 
           size={30}
           color= {'#ffffff'}
-          position='absolute'
           top={30}
-          
           backgroundColor={'transparent'}
         /></View>
       );
     }
     else {
-      return (
-        <Image
-          resizeMode='contain'
-          style={styles.locationIcon}
-          source={require('./img/location_icon.png')}
-        />
+      return(
+        null
+      // return (
+      //   <Image
+      //     resizeMode='contain'
+      //     style={styles.locationIcon}
+      //     source={require('./img/location_icon.png')}
+      //   />
       );
     }
   }
@@ -1219,7 +1216,7 @@ class DateTimePicker extends Component {
               mode="datetime"
               format="DD/MM HH:mm"
               hideText={true}
-              showIcon={true}
+              showIcon={false}
               onDateChange={(datetime) => { this.datePickerChanged(datetime) }}
             />
           </View>
@@ -1388,11 +1385,6 @@ export default class CONTROLS extends Component {
     this.buttonToggled('sliderTime', value);
   }
 
-  gotNewLoc = (place) => {
-    this.refs['LocationPicker'].setLocation(place);
-  }
-
-
   render() {
     return (
       <Animated.View 
@@ -1560,19 +1552,15 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       },
 
-      locationIcon:{
-        position:'absolute',
-        top:10,left:0,right:0,bottom:0,
-        maxHeight:30,
-        width:40,
-        minHeight:30,
-      },
+      // locationIcon:{
+      //   alignSelf:'stretch',
+      // },
       locationAdd:{
-        position:'absolute',
-        top:10,left:10, 
+        top:10,
+        alignSelf:'stretch',
       },
       locationName:{
-        paddingLeft:40,
+        paddingLeft:5,
         textAlign:'center',
         color:'white',
       },

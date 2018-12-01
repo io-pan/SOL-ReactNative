@@ -404,7 +404,7 @@ export default class MotionManager extends Component {
 
     if (place){
       this.curLoc = place;
-      this.refs['CONTROLS'].gotNewLoc(place);
+      this.refs['CONTROLS'].refs['LocationPicker'].setLocation(place);
 
       if (this.webViewBridgeReady) {
         this.refs.scene.postMessage( JSON.stringify({ loc:place }));
