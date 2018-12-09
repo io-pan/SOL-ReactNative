@@ -194,8 +194,8 @@
                 setTimeout(waitForFOV, 10);
             }
             else {
-                // updSunPos();
-                // updDayPath();
+                updSunPos();
+                updDayPath();
                 // updYearPath();
                 // updSolsticesPath();
                 animate();
@@ -907,6 +907,7 @@
                         dayPathTxt[i2/60].rotation.z = 0;// Math.PI/2-coord.alt;
                     }
                     else {
+                        // alert(camera.position.x+camera.position.y+camera.position.z)
                         dayPathTxt[i2/60].lookAt( camera.position );
                     }
 
