@@ -30,7 +30,10 @@ import { GOOGLE_APIKEY } from './googleAPIKEY.js';
 
 const deviceWidth = Dimensions.get('window').width,
       appFolder = RNFetchBlob.fs.dirs.DocumentDir,
-      sec2utc = function (sec, arg){
+      
+      sec2utc = function (sec){
+        if(typeof sec =='undefined') sec = 0;
+
         var sign ='';
         if (sec>=0) {
           sign ='+';
@@ -51,6 +54,8 @@ const deviceWidth = Dimensions.get('window').width,
         return sign+hour+':'+min;
       },
       utc2sec = function (utc){
+        if(typeof utc =='undefined') return 0;
+
         const hour = parseInt(utc.split(':')[0], 10);
         let min;
         if(utc.indexOf(':')>=0){
@@ -592,7 +597,7 @@ class LocationEdit extends Component {
               <TextInput
                 underlineColorAndroid='transparent'
                 // keyboardType = 'numeric'
-                defaultValue = {sec2utc(this.state.gmt, 'o')}
+                defaultValue = {sec2utc(this.state.gmt)}
                 style = {{ 
                   backgroundColor:'white', 
                   marginTop:5,
