@@ -30,7 +30,7 @@ import { GOOGLE_APIKEY } from './googleAPIKEY.js';
 
 const deviceWidth = Dimensions.get('window').width,
       appFolder = RNFetchBlob.fs.dirs.DocumentDir,
-      formatGMT = function (sec){
+      sec2utc = function (sec, arg){
         var sign ='';
         if (sec>=0) {
           sign ='+';
@@ -50,6 +50,18 @@ const deviceWidth = Dimensions.get('window').width,
         }
         return sign+hour+':'+min;
       },
+      utc2sec = function (utc){
+        const hour = parseInt(utc.split(':')[0], 10);
+        let min;
+        if(utc.indexOf(':')>=0){
+          min = parseInt(utc.split(':')[1], 10);
+        }
+        else { // consider hours are given
+          min = 0;
+        }
+        return hour*3600 + min*60;
+      },
+
       strings = new LocalizedStrings({
         'en':{
           yes:'YES',
@@ -485,18 +497,24 @@ class LocationEdit extends Component {
           />
 
           <View style = {styles.editCoords}>
-            <View style = {styles.flex05}>
-              <Text style = {{color:'white',}}>{strings.latitude}</Text>
+            
+            <View style = {styles.flex07}>
+            <View style = {styles.flex1Row}>
+              <Text style = {{marginLeft:2, color:'white',flex:0.4,}}>{strings.latitude}</Text>
               <TextInput
                 underlineColorAndroid='transparent'
                 // keyboardType = 'numeric'
                 defaultValue = {this.state.lat.toFixed(6)}
                 style = {{ 
                   backgroundColor:'white', 
-                  marginTop:5,
-                  marginRight:8,
-                  padding:5,
-                  fontSize:20,
+                  padding:0,
+                  paddingLeft:2,
+                  paddingRight:5,
+                  textAlign:'right',
+                  marginBottom:2,
+                  marginRight:10,
+                  fontSize:18,
+                  flex:0.6,
                 }}
                 onEndEditing = {(event) => {
                   var latitude = parseFloat(event.nativeEvent.text)
@@ -524,18 +542,22 @@ class LocationEdit extends Component {
                 }}
               />
             </View>
-            <View style = {styles.flex05}>
-              <Text style={{color:'white',marginLeft:8}}>{strings.longitude}</Text>
+            <View style = {styles.flex1Row}>
+              <Text style={{marginLeft:2, color:'white',flex:0.4,}}>{strings.longitude}</Text>
               <TextInput
                 underlineColorAndroid='transparent'
                 // keyboardType = 'numeric'
                 defaultValue = {this.state.lon.toFixed(6)}
                 style = {{ 
                   backgroundColor:'white', 
-                  marginTop:5,
-                  marginLeft:8,
-                  padding:5,
-                  fontSize:20,
+                  padding:0,
+                  paddingLeft:2,
+                  paddingRight:5,
+                  textAlign:'right',
+                  marginBottom:2,
+                  marginRight:10,
+                  fontSize:18,
+                  flex:0.6,
                 }}
                 onEndEditing = {(event) => {
                   var longitude = parseFloat(event.nativeEvent.text)
@@ -560,6 +582,35 @@ class LocationEdit extends Component {
                     latitudeDelta:this.state.latitudeDelta,
                     longitudeDelta:this.state.longitudeDelta,
                   });
+                }}
+              />
+            </View>
+            </View>
+
+            <View style = {styles.flex03}>
+              <Text style={{color:'white',marginLeft:8}}>UTC</Text>
+              <TextInput
+                underlineColorAndroid='transparent'
+                // keyboardType = 'numeric'
+                defaultValue = {sec2utc(this.state.gmt, 'o')}
+                style = {{ 
+                  backgroundColor:'white', 
+                  marginTop:5,
+                  marginLeft:8,
+                  padding:5,
+                  fontSize:18,
+                }}
+                onEndEditing = {(event) => {
+                  var gmt = utc2sec(event.nativeEvent.text) === parseInt(utc2sec(event.nativeEvent.text), 10)
+                              ? utc2sec(event.nativeEvent.text)
+                              : 0;
+                  this.setState({gmt:gmt});
+                }}
+                onSubmitEditing = {(event) => {
+                  var gmt = utc2sec(event.nativeEvent.text) === parseInt(utc2sec(event.nativeEvent.text), 10)
+                              ? utc2sec(event.nativeEvent.text)
+                              : 0;
+                  this.setState({gmt:gmt});
                 }}
               />
             </View>
@@ -637,7 +688,7 @@ class LocationListItem extends Component {
           <View style={styles.listItemInfoContainer} >
             <Text style={styles.listItemName}>{this.props.title}</Text>
             <View style={styles.listItemCoords} >
-               <Text style={styles.flex05}>UTC{formatGMT(this.props.gmt)}</Text>
+               <Text style={styles.flex05}>UTC{sec2utc(this.props.gmt)}</Text>
                <Text style={styles.flex05}>Lat. {this.props.lat}</Text>
             </View>
           </View>
@@ -1205,7 +1256,7 @@ export default class GeolocationManager extends Component {
               <Text style={styles.listItemName}> {this.state.name} </Text>
               <View style={styles.listItemCoordSearch}>
                 <Text  style={styles.flex05} > Lat. {this.state.lat} </Text>
-                <Text  style={styles.flex05} > UTC{formatGMT(this.state.gmt)} </Text>
+                <Text  style={styles.flex05} > UTC{sec2utc(this.state.gmt)} </Text>
               </View>
             </View>
             <View style={styles.listItemEditContainer} >
@@ -1403,8 +1454,8 @@ const styles = StyleSheet.create({
           },
           editCoords:{
             flex:1,
-            flexDirection:'row',
             margin:10,
+            flexDirection:'row',
           },
 
     geopicker: {
@@ -1435,7 +1486,7 @@ const styles = StyleSheet.create({
     },
 
     editLocation:{
-      backgroundColor: 'rgba(250,250,255,0.8)',
+      backgroundColor:'rgba(200,200,202,0.8)',
       flex:1,
     },
 
@@ -1445,6 +1496,16 @@ const styles = StyleSheet.create({
       },
      flex05:{
         flex:0.5,
+      },
+     flex05Row:{
+        flex:0.5,
+        flexDirection:'row',
+      },
+     flex07:{
+      flex:0.75,
+    },
+     flex03:{
+        flex:0.25,
       },
   sortButtonsContainer:{
     flexDirection:'row',
