@@ -25,3 +25,4 @@ Many thanks to following components authors.
   <li>react-native-smart-splash-screen</li>
 </ul>
 
+never tested on iOS
