@@ -24,8 +24,8 @@
       
         <activity
           android:name=".MainActivity"
-          android:label="@string/app_name"
           android:theme="@style/AppTheme"
+          android:label="@string/app_name"
 
           android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
           android:windowSoftInputMode="adjustResize"
@@ -42,8 +42,11 @@
 
       <meta-data
           android:name="com.google.android.geo.API_KEY"
-          android:value="xxxxxxxxxxxx" />
-
+          android:value="AIzaSyBx5aqe18O-ADwLjT64Ip0Sp2sYArbsDsg" />
+<!-- 
+release   AIzaSyBx5aqe18O-ADwLjT64Ip0Sp2sYArbsDsg
+dev       AIzaSyAySV-_NvIHbs2Fw1Eh32ErfC6dUGRmzZ4
+-->
 
     </application>
 

@@ -1,0 +1,1612 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"str",
+				"stringify"
+			],
+			[
+				"dev",
+				"deviceName"
+			],
+			[
+				"device",
+				"deviceAddress"
+			],
+			[
+				"came",
+				"camera0"
+			],
+			[
+				"T",
+				"Text"
+			],
+			[
+				"render",
+				"renderCamera"
+			],
+			[
+				"ra",
+				"ratio"
+			],
+			[
+				"la",
+				"latitude"
+			],
+			[
+				"des",
+				"destPath"
+			],
+			[
+				"con",
+				"container"
+			],
+			[
+				"gps",
+				"gps_point"
+			],
+			[
+				"border",
+				"borderWidth"
+			],
+			[
+				"cont",
+				"const"
+			],
+			[
+				"st",
+				"styles"
+			],
+			[
+				"style",
+				"style"
+			],
+			[
+				"sty",
+				"style"
+			],
+			[
+				"IGN",
+				"IGN_scan"
+			],
+			[
+				"menu",
+				"menuPosition"
+			],
+			[
+				"can",
+				"canvasData"
+			],
+			[
+				"deg",
+				"degToRad"
+			],
+			[
+				"canvas",
+				"canvasData"
+			],
+			[
+				"flex",
+				"flexDirection"
+			],
+			[
+				"lon",
+				"lonTouch"
+			],
+			[
+				"ph",
+				"photos"
+			],
+			[
+				"json",
+				"jsonData"
+			],
+			[
+				"padding",
+				"paddingLeft"
+			],
+			[
+				"Sol",
+				"Solstices"
+			],
+			[
+				"G",
+				"geo"
+			],
+			[
+				"enable",
+				"enabled"
+			],
+			[
+				"han",
+				"handleStop"
+			],
+			[
+				"to",
+				"toValue"
+			],
+			[
+				"margin",
+				"marginLeft"
+			],
+			[
+				"tr",
+				"transparent"
+			],
+			[
+				"ina",
+				"inactiveColor"
+			],
+			[
+				"ta",
+				"takePhoto"
+			],
+			[
+				"vie",
+				"viewBg"
+			],
+			[
+				"padd",
+				"paddingLeft"
+			],
+			[
+				"Sun",
+				"SunPathLayout"
+			],
+			[
+				"vi",
+				"visible"
+			],
+			[
+				"tra",
+				"transparent"
+			],
+			[
+				"g",
+				"gyroscope"
+			],
+			[
+				"view",
+				"View"
+			],
+			[
+				"ba",
+				"backgroundColor"
+			],
+			[
+				"devi",
+				"deviceWidth"
+			],
+			[
+				"cam",
+				"camGrp"
+			],
+			[
+				"ref",
+				"refs"
+			],
+			[
+				"coll",
+				"collapsed"
+			],
+			[
+				"co",
+				"collapsed"
+			],
+			[
+				"alp",
+				"alpha0"
+			],
+			[
+				"ini",
+				"initialAzimuth"
+			],
+			[
+				"mo",
+				"mobileNorth"
+			],
+			[
+				"web",
+				"WebView"
+			],
+			[
+				"app",
+				"appFolder"
+			],
+			[
+				"mar",
+				"marginBottom"
+			],
+			[
+				"fon",
+				"fontWeight"
+			],
+			[
+				"text",
+				"textAlign"
+			],
+			[
+				"groun",
+				"groundRadius"
+			],
+			[
+				"in",
+				"index"
+			],
+			[
+				"syt",
+				"style"
+			],
+			[
+				"cat",
+				"CATRhythmus"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"aler",
+				"alert"
+			],
+			[
+				"type",
+				"typeof"
+			],
+			[
+				"magin",
+				"marginBottom"
+			],
+			[
+				"sol",
+				"solstices"
+			],
+			[
+				"colo",
+				"colors"
+			],
+			[
+				"aLer",
+				"Alert"
+			],
+			[
+				"a",
+				"absolute"
+			],
+			[
+				"ren",
+				"render"
+			],
+			[
+				"mark",
+				"markerList"
+			],
+			[
+				"par",
+				"parse"
+			],
+			[
+				"jas",
+				"jsonData"
+			],
+			[
+				"year",
+				"yearPath"
+			],
+			[
+				"mon",
+				"month"
+			],
+			[
+				"sud",
+				"sudTxt"
+			],
+			[
+				"get",
+				"getTime"
+			],
+			[
+				"inclina",
+				"InclinaisonTerre"
+			],
+			[
+				"gr",
+				"green"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"Lat",
+				"Latitude"
+			],
+			[
+				"pars",
+				"parseFloat"
+			],
+			[
+				"Par",
+				"parseFloat"
+			],
+			[
+				"aert",
+				"Alert"
+			],
+			[
+				"loca",
+				"locationChanged"
+			],
+			[
+				"al",
+				"alert"
+			],
+			[
+				"margi",
+				"marginTop"
+			],
+			[
+				"fls",
+				"false"
+			],
+			[
+				"edi",
+				"editModalOpen"
+			],
+			[
+				"_ren",
+				"_renderAddLocButton"
+			],
+			[
+				"loc",
+				"locList"
+			],
+			[
+				"_rend",
+				"_renderAzumuthCorectionSlider"
+			],
+			[
+				"set",
+				"setState"
+			],
+			[
+				"orie",
+				"orient"
+			],
+			[
+				"da",
+				"datetime"
+			],
+			[
+				"Js",
+				"JSON"
+			],
+			[
+				"te",
+				"textAlign"
+			],
+			[
+				"date",
+				"datetime"
+			],
+			[
+				"d",
+				"datetime"
+			],
+			[
+				"dat",
+				"datetime"
+			],
+			[
+				"dra",
+				"drawSunPath"
+			],
+			[
+				"dr",
+				"drawSunPath"
+			],
+			[
+				"js",
+				"jsonData"
+			],
+			[
+				"fle",
+				"flexDirection"
+			],
+			[
+				"sel",
+				"selLoc"
+			],
+			[
+				"onS",
+				"onSelectLoc"
+			],
+			[
+				"su",
+				"subPage"
+			],
+			[
+				"M",
+				"Math"
+			],
+			[
+				"rad",
+				"radian"
+			],
+			[
+				"long",
+				"longitude"
+			],
+			[
+				"doy",
+				"getDOY"
+			],
+			[
+				"getUTC",
+				"getUTCMinutes"
+			],
+			[
+				"getUtc",
+				"getUTCHours"
+			],
+			[
+				"angle",
+				"angle_horaire"
+			],
+			[
+				"lo",
+				"longitude"
+			],
+			[
+				"JJ",
+				"JJulien"
+			],
+			[
+				"lat",
+				"latitude"
+			],
+			[
+				"pano",
+				"panorama"
+			],
+			[
+				"pan",
+				"panorama"
+			],
+			[
+				"vF",
+				"vFOV"
+			],
+			[
+				"mas",
+				"maskOn"
+			],
+			[
+				"loaded",
+				"loadedScene"
+			],
+			[
+				"array_m",
+				"array_merge"
+			],
+			[
+				"va",
+				"value"
+			],
+			[
+				"db",
+				"dbData"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"over",
+				"overflow"
+			],
+			[
+				"for",
+				"foreach\tforeach …"
+			],
+			[
+				"ge",
+				"getInfo"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "components/motion.js",
+			"settings":
+			{
+				"buffer_size": 22434,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "App.js",
+			"settings":
+			{
+				"buffer_size": 627,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/dev/app/BTControl/App.js",
+			"settings":
+			{
+				"buffer_size": 1126,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/dev/app/BTControl/App - Copie.js",
+			"settings":
+			{
+				"buffer_size": 9190,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "components/canvas.html",
+			"settings":
+			{
+				"buffer_size": 1247969,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "components/location.js",
+			"settings":
+			{
+				"buffer_size": 43971,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "components/controls.js",
+			"settings":
+			{
+				"buffer_size": 42473,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/dev/app/BTControl/android/app/src/main/AndroidManifest.xml",
+			"settings":
+			{
+				"buffer_size": 1022,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "android/app/src/main/AndroidManifest.xml",
+			"settings":
+			{
+				"buffer_size": 2092,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "components/googleAPIKEY.js",
+			"settings":
+			{
+				"buffer_size": 72,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/dev/app/p2p/android/settings.gradle",
+			"settings":
+			{
+				"buffer_size": 41,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/dev/app/BTControl/android/build.gradle",
+			"settings":
+			{
+				"buffer_size": 1039,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/dev/app/BTControl/android/app/src/main/java/com/btcontrol/MainApplication.java",
+			"settings":
+			{
+				"buffer_size": 1452,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "android/app/src/main/res/values/styles.xml",
+			"settings":
+			{
+				"buffer_size": 1186,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/dev/app/cmd.txt",
+			"settings":
+			{
+				"buffer_size": 4689,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Initialization\ninitialize()\n  This method must calling before any using of others method, because here happened start initialization of react-native-wifi-p2p module. Recommend to initialize it on root files, but if your application has specific logic, then you can call it before directly using. Notice, that recommend called only once.\n\ninitialize();\nisSuccessfulInitialize()\nReturn boolean status true/false of initialization method.\n\nisSuccessfulInitialize()\n    .then(isSuccessfulInitialize => console.log('isSuccessfulInitialize: ', status));\nstartDiscoveringPeers()\nstartDiscoveringPeers() starting emit action to discover available devices. Note, that this function doesn't return any information about available devices/peers. It return information about successfully start.\n\nstartDiscoveringPeers()\nstartDiscoveringPeers() starting emit action to discover available devices. Note, that this function doesn't return any information about available devices/peers. It return information about successfully start.\n\nstopDiscoveringPeers()\n prevent emit action to discover available devices. Note, that this function doesn't return any information about available devices/peers. It return information about successfully stopping of discovering.\nstopDiscoveringPeers()\n    .then(() => console.log('Stop discovering was successful'))\n    .catch(err => console.error(`Something is gone wrong. Maybe your WiFi is disabled? Error details: ${err}`));\n\n\n\nSubscribers & Actions annunciators\n\nsubscribeOnPeersUpdates(callback)\nsubscribeOnPeersUpdates(callback) allow to subscribe on events, that will notify about availability of nearby devices.\n\nsubscribeOnPeersUpdates(({ devices }) => {\n    console.log(`New devices available: ${devices}`);\n});\nunsubscribeFromPeersUpdates(callback)\nunsubscribeFromPeersUpdates((event) => console.log(event));\nsubscribeOnConnectionInfoUpdates(callback)\nsubscribeOnConnectionInfoUpdates((event) => {\n    console.log('Connection Info Updates: ', event);\n});\nunsubscribeFromConnectionInfoUpdates(callback)\nunsubscribeFromConnectionInfoUpdates((event) => {\n    console.log('Unsubscribe from ConnectionInfoUpdates action: ', event);\n});\n\n\n\nInteraction with other devices\n\ngetAvailablePeers()\nIf you don't want to always get notification from event emitter, when peers list has changed, you can use this method. This method will return info about nearby devices, that is available for searching, at the time of the call this method.\n\nImportant: before using this method you also need to call startDiscoveringPeers. In other case you always will get empty array.\n\n\nconnect(deviceAddress)\nConnect to network. The devices found from the subscribeOnPeersUpdates method. Should use deviceAddress field from necessary device from array. This field represent a MAC address that is used to connect.\n\nconnect('22:47:da:9d:58:83')\n    .then(() => console.log('Successfully connected'))\n    .catch(err => console.error('Something gone wrong. Details: ', err));\ndisconnect()\nDisconnect from network. Should use when you want to reconnect or turn off wifi.\n\ndisconnect()\n    .then(() => console.log('Successfully disconnected'))\n    .catch(err => console.error('Something gone wrong. Details: ', err));\ncreateGroup()\nP2P STAR is a peer-to-peer strategy that supports a 1-to-N, or star-shaped, connection topology. In other words, this enables connecting devices within radio range (~100m) in a star shape, where each device can, at any given time, play the role of either a hub (where it can accept incoming connections from N other devices), or a spoke (where it can initiate an outgoing connection to a single hub), but not both. So achieve this goal you can use createGroup method, so create your own group.\n\ncreateGroup()\n    .then(() => console.log('Group created successfully!'))\n    .catch(err => console.error('Something gone wrong. Details: ', err));\nremoveGroup()\nBefore exit of application you need to call this method, if earlier you created group via createGroup() method.\n\nremoveGroup()\n    .then(() => console.log('Currently you don\\'t belong to group!'))\n    .catch(err => console.error('Something gone wrong. Details: ', err));\nsendFile(pathToFIle)\nYou should call this method if you want to copy file from client side to server using wi-fi p2p feature. Before sending you should execute next steps:\n\nCreate group on server side\nConnect to server-group from client side\nAfter establishing connection you should call getConnectionInfo() on client side\nCall receiveFile() on server side (receiveFile return Promise<string> - path to saved file)\nCall sendFile(pathToFile) on client side, after resolving getConnectionInfo()\nNote: now this method mark as unstable, because:\n\nYou can't set folder for receiving file\nYou can't send additional info about file (file name, file type and so on). Currently it saves like ${currentMsTime}.jpeg\nThis method work async, but currently promise resolved before. It mean, that file will transferring, but promise already will be resolved (receiveFile() resolved as should be)\nimport { PermissionsAndroid } from 'react-native';\n\nPermissionsAndroid.request(\n                  PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,\n                  {\n                      'title': 'Access to read',\n                      'message': 'READ_EXTERNAL_STORAGE'\n                  }\n              )\n          .then(granted => {\n              if (granted === PermissionsAndroid.RESULTS.GRANTED) {\n                  console.log(\"You can use read operation\")\n              } else {\n                  console.log(\"Read operation permission denied\")\n              }\n          })\n          .then(() => {\n              return PermissionsAndroid.request(\n                  PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,\n                  {\n                      'title': 'Access to write',\n                      'message': 'WRITE_EXTERNAL_STORAGE'\n                  }\n              )\n          })\n          .then(() => {\n              return sendFile('path/to/file')\n                  .then(() => console.log('File sent successfully'))\n                  .catch(err => console.log('Error while file sending', err));\n          })\n          .catch(err => console.log(err));\nsendMessage(message)\nYou should call this method if you want to send from client side to server (group) using wi-fi p2p feature. Before sending you should execute next steps:\n\nCreate group on server side (side, which will receive message)\nConnect to server-group from client side\nAfter establishing connection you should call getConnectionInfo() on client side (also recommend do it on group-server side)\nCall receiveMessage() on server side (receiveMessage return Promise<string> - message from client)\nCall sendMessage(message) on client side, after resolving getConnectionInfo()\nNote: now this method mark as unstable, because this method work async, but currently promise resolved before. It mean, that message will transferring, but promise already will be resolved (receiveMessage() works perfectly, and his Promise resolved as should be).\n\nAlso you cannot send character encoding for string and by default this library uses UTF-8.\n\nCONSTANTS\nWifiP2pDevice statuses\nimport {\n    CONNECTED,\n    INVITED,\n    FAILED,\n    AVAILABLE,\n    UNAVAILABLE\n} from 'react-native-wifi-p2p/device-info-statuses';\nEvents of library\nimport {\n    PEERS_UPDATED_ACTION,\n    CONNECTION_INFO_UPDATED_ACTION,\n } from 'react-native-wifi-p2p';\nimport {\n    subscribeOnEvent,\n    unsubscribeFromEvent,\n} from 'react-native-wifi-p2p';\n\n// example of usage\nsubscribeOnEvent(PEERS_UPDATED_ACTION, (event) => {\n    console.log(event);\n});",
+			"settings":
+			{
+				"buffer_size": 7639,
+				"line_ending": "Windows",
+				"name": "Initialization"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 104.0,
+		"last_filter": "install ",
+		"selected_items":
+		[
+			[
+				"install ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 120.0,
+		"history":
+		[
+			"sublime.log_commands(True) ",
+			"import urllib2,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler()) ); by = urllib2.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/dev/app/BTControl"
+	],
+	"file_history":
+	[
+		"/D/dev/app/p2p/App.js",
+		"/D/dev/app/BTControl/node_modules/react-native-wifi-p2p/android/src/main/java/io/wifi/p2p/WiFiP2PManagerPackage.java",
+		"/D/dev/app/BTControl/node_modules/react-native-wifi-p2p/android/src/main/java/io/wifi/p2p/WiFiP2PManagerModule.java",
+		"/D/dev/app/BTControl/node_modules/react-native-wifi-p2p/android/build.gradle",
+		"/D/dev/app/SOL/components/infos.js",
+		"/D/dev/app/BTControl/node_modules/react-native-wifi-p2p/android/build/generated/source/r/androidTest/debug/android/support/v7/appcompat/R.java",
+		"/D/dev/app/BTControl/android/app/build.gradle",
+		"/D/dev/app/BTControl/android/app/proguard-rules.pro",
+		"/D/dev/app/BTControl/android/gradle.properties",
+		"/D/dev/app/BTControl/android/settings.gradle",
+		"/D/dev/app/SOL/package-lock.json",
+		"/D/dev/app/SOL/package.json",
+		"/D/dev/app/SOL/android/app/src/main/AndroidManifest.xml",
+		"/D/dev/app/SOL/android/app/build.gradle",
+		"/D/dev/app/SOL/android/gradle.properties",
+		"/D/dev/app/SOL/android/build.gradle",
+		"/D/dev/app/BTControl/android/build.gradle",
+		"/D/dev/app/BTControl/android/app/src/main/AndroidManifest.xml",
+		"/D/dev/app/BTControl/android/app/src/main/java/com/btcontrol/MainApplication.java",
+		"/D/dev/app/SOL/components/canvas.html",
+		"/D/dev/app/SOL/node_modules/react-native-camera/src/RNCamera.js",
+		"/D/dev/app/SOL/README.md",
+		"/D/dev/app/SOL_bck/rn_0.44.2/2-maj android absoltude marche plus/canvas.html",
+		"/D/dev/app/SOL/components/cam.js",
+		"/D/dev/app/SOL/node_modules/react-native/Libraries/Utilities/PixelRatio.js",
+		"/D/Bureau/510 notaire",
+		"/D/dev/app/SOL/node_modules/react-native-camera/src/Camera.js",
+		"/D/dev/app/SOL/app.json",
+		"/D/dev/app/SOL/components/controls.js",
+		"/D/dev/app/SOL/App.test.js",
+		"/D/dev/app/_SOL/android/app/src/main/AndroidManifest.xml",
+		"/D/dev/app/_SOL/components/location.js",
+		"/D/dev/app/_SOL/node_modules/react-native-maps/LICENSE",
+		"/D/dev/app/_SOL/node_modules/react-native-maps/index.js",
+		"/D/downloads/Grave 2017 FRENCH DVDRip XviD-UTT/Grave 2017 FRENCH DVDRip XviD-UTT/Mot De Passe.txt",
+		"/D/dev/app/SOL/android/app/src/main/java/com/sol/MainActivity.java",
+		"/D/dev/app/SOL/android/app/src/main/java/com/sol/MainApplication.java",
+		"/D/dev/app/_SOL/components/cam.js",
+		"/D/dev/app/_SOL/components/motion.js",
+		"/D/dev/app/SOL/components/_motion.js",
+		"/D/dev/app/SOL/android/settings.gradle",
+		"/D/dev/app/SOL/android/build - Copie.gradle",
+		"/D/dev/app/_SOL/index.android.js",
+		"/D/dev/app/SOL057/components/cam.js",
+		"/D/dev/app/SOL057/components/motion.js",
+		"/D/dev/app/SOL057/components/controls.js",
+		"/D/dev/app/SOL057/components/location.js",
+		"/D/dev/app/SOL057/components/_motion.js",
+		"/D/dev/app/SOL057/App.js",
+		"/D/dev/app/SOL057/android/app/src/main/AndroidManifest.xml",
+		"/D/dev/app/SOL/android/gradle/wrapper/gradle-wrapper.properties",
+		"/D/dev/app/SOL/index.js",
+		"/D/dev/app/SOL/components/googleAPIKEY.js",
+		"/D/dev/app/SOL/node_modules/react-native/react.gradle",
+		"/D/dev/app/SOL/node_modules/react-native-datepicker/datepicker.js",
+		"/D/dev/app/SOL/components/APIKEY.js",
+		"/D/dev/app/SOL/android/gradlew",
+		"/D/dev/app/SOL057/android/gradle.properties",
+		"/D/dev/app/SOL057/android/settings.gradle",
+		"/D/dev/app/SOL057/android/app/build.gradle",
+		"/D/dev/app/SOL057/android/build.gradle",
+		"/D/dev/app/SOL057/node_modules/rn-splash-screen/android/src/main/java/com/mehcode/reactnative/splashscreen/SplashScreen.java",
+		"/D/dev/app/SOL057/android/app/src/main/java/com/sol057/MainApplication.java",
+		"/D/dev/app/SOL057/android/app/src/main/java/com/sol057/MainActivity.java",
+		"/D/dev/app/_SOL/android/build.gradle",
+		"/D/dev/app/_SOL/android/app/build.gradle",
+		"/D/dev/app/_SOL/android/gradle.properties",
+		"/D/dev/app/SOL/App.js",
+		"/D/dev/app/SOL057/node_modules/rn-splash-screen/android/src/main/java/com/mehcode/reactnative/splashscreen/SplashScreenModule.java",
+		"/D/dev/app/SOL/.gitignore",
+		"/D/dev/app/SOL057/app.json",
+		"/D/dev/app/SOL057/android/app/BUCK",
+		"/D/dev/app/SOL057/node_modules/yargs-parser/package.json",
+		"/D/dev/app/SOL057/node_modules/yargs/package.json",
+		"/D/dev/app/SOL057/node_modules/yallist/package.json",
+		"/D/dev/app/SOL057/node_modules/y18n/package.json",
+		"/D/dev/app/SOL057/node_modules/xtend/package.json",
+		"/D/dev/app/SOL057/node_modules/xpipe/package.json",
+		"/D/dev/app/SOL057/node_modules/xmldom/package.json",
+		"/D/dev/app/SOL057/node_modules/xmldoc/package.json",
+		"/D/dev/app/SOL057/node_modules/xmlbuilder/package.json",
+		"/D/dev/app/SOL057/node_modules/xml-name-validator/package.json",
+		"/D/dev/app/SOL057/node_modules/xcode/package.json",
+		"/D/dev/app/SOL057/node_modules/ws/package.json",
+		"/D/dev/app/SOL057/node_modules/write-file-atomic/package.json",
+		"/D/dev/app/SOL057/node_modules/wrappy/package.json",
+		"/D/dev/app/SOL057/node_modules/wrap-ansi/node_modules/string-width/package.json",
+		"/D/dev/app/SOL057/node_modules/wrap-ansi/node_modules/is-fullwidth-code-point/package.json",
+		"/D/dev/app/SOL057/node_modules/wrap-ansi/package.json",
+		"/D/dev/app/SOL057/node_modules/wordwrap/package.json",
+		"/D/dev/app/SOL057/node_modules/will/package.json",
+		"/D/dev/app/SOL057/node_modules/which-module/package.json",
+		"/D/dev/app/SOL057/node_modules/which/package.json",
+		"/D/dev/app/SOL057/node_modules/whatwg-url/package.json",
+		"/D/dev/app/SOL057/node_modules/whatwg-mimetype/package.json",
+		"/D/dev/app/SOL057/node_modules/whatwg-fetch/package.json",
+		"/D/dev/app/SOL057/node_modules/whatwg-encoding/node_modules/iconv-lite/package.json",
+		"/D/dev/app/SOL057/node_modules/whatwg-encoding/package.json",
+		"/D/dev/app/SOL057/node_modules/webidl-conversions/package.json",
+		"/D/dev/app/SOL057/node_modules/watch/package.json",
+		"/D/dev/app/SOL057/node_modules/walker/package.json",
+		"/D/dev/app/SOL057/node_modules/w3c-hr-time/package.json",
+		"/D/dev/app/SOL057/node_modules/verror/package.json",
+		"/D/dev/app/SOL057/node_modules/vary/package.json",
+		"/D/dev/app/SOL057/node_modules/validate-npm-package-license/package.json",
+		"/D/dev/app/SOL057/node_modules/uuid/package.json",
+		"/D/dev/app/SOL057/node_modules/utils-merge/package.json",
+		"/D/dev/app/SOL057/node_modules/util.promisify/package.json",
+		"/D/dev/app/SOL057/node_modules/util-deprecate/package.json",
+		"/D/dev/app/SOL057/node_modules/use/package.json",
+		"/D/dev/app/SOL057/node_modules/urix/package.json",
+		"/D/dev/app/SOL057/node_modules/unset-value/node_modules/isobject/package.json",
+		"/D/dev/app/SOL057/node_modules/unset-value/node_modules/has-values/package.json",
+		"/D/dev/app/SOL057/node_modules/unset-value/node_modules/has-value/node_modules/isobject/package.json",
+		"/D/dev/app/SOL057/node_modules/unset-value/node_modules/has-value/package.json",
+		"/D/dev/app/SOL057/node_modules/unset-value/package.json",
+		"/D/dev/app/SOL057/node_modules/unpipe/package.json",
+		"/D/dev/app/SOL057/node_modules/union-value/node_modules/set-value/package.json",
+		"/D/dev/app/SOL057/node_modules/union-value/node_modules/extend-shallow/package.json",
+		"/D/dev/app/SOL057/node_modules/union-value/node_modules/arr-union/package.json",
+		"/D/dev/app/SOL057/node_modules/union-value/package.json",
+		"/D/dev/app/SOL057/node_modules/unicode-property-aliases-ecmascript/package.json",
+		"/D/dev/app/SOL057/node_modules/unicode-match-property-value-ecmascript/package.json",
+		"/D/dev/app/SOL057/node_modules/unicode-match-property-ecmascript/package.json",
+		"/D/dev/app/SOL057/node_modules/unicode-canonical-property-names-ecmascript/package.json",
+		"/D/dev/app/SOL057/node_modules/ultron/package.json",
+		"/D/dev/app/SOL057/node_modules/uglify-es/node_modules/source-map/package.json",
+		"/D/dev/app/SOL057/node_modules/uglify-es/node_modules/commander/package.json"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+			"*.*,<open files>,<open folders>",
+			"*.js,<open files>,<open folders>",
+			"*.js",
+			"*.*",
+			"*.js",
+			"",
+			"*.js",
+			"*.java",
+			"*.js"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"com.facebook.react:react-native:0.57.0",
+			"WiFiP2PBroadcastReceiver",
+			"appcompat",
+			"com.android.support:appcompat",
+			"onSendMessage",
+			"onGetAvailableDevices",
+			"onStartDiscoveringPeers",
+			"onGetAvailableDevices",
+			"spiltH_leftInner",
+			"renderLocationIcon",
+			"locationAdd",
+			"locationIcon",
+			"locationAdd",
+			"datetimep",
+			"locationAdd",
+			"locationName",
+			"spiltH_leftInner",
+			"location_icon",
+			"<Icon",
+			"Icon",
+			"locationIcon",
+			"locationAdd",
+			"setLocation",
+			"this.prop",
+			"toolBar",
+			"this.state.loc",
+			"locationp",
+			"gotNewLoc",
+			"setLocation",
+			"setLocationId",
+			"setLocation",
+			"gotNewLoc",
+			"_keyExtractor",
+			"forwardSelectedLocation",
+			"Alert",
+			"onPressItem",
+			"onpress",
+			"else if (propertyName == 'view') {",
+			"sing",
+			"(eq",
+			"compassCross",
+			".view",
+			"view",
+			"compassCross",
+			"compassgr",
+			"degto",
+			"compass",
+			"materialMeridians",
+			"var ring ",
+			"nord ",
+			"nord ax",
+			"materialNord",
+			"compas",
+			".remov",
+			"compas",
+			"bouso",
+			"bouson",
+			"cube",
+			"cette",
+			"title",
+			"blue",
+			"credi",
+			"normal",
+			"trouvé",
+			"scrollView",
+			"infosContainer",
+			"locationIcon",
+			"<image",
+			"TouchableHighlight",
+			"ScrollView",
+			"<imag",
+			"strings.sel",
+			"\"merge\"",
+			"dependencies",
+			"devDependencies",
+			"dependencies",
+			"merge",
+			"subscribeOnEvent",
+			"onGetConnectionInfo",
+			"getConnectionInfo",
+			"getConnectionInfo() ",
+			"onStartDiscoveringPeers",
+			"startDiscoveringPeers",
+			"handle",
+			".map",
+			"onStartDiscoveringPeers",
+			"invest",
+			"geta",
+			"textInputComponents",
+			"'P",
+			"textInputComponents",
+			"container",
+			"renderDevices",
+			"  renderDevice",
+			"  renderDevices() {\n",
+			".ma",
+			"non",
+			"onGetAvailableDevices",
+			"alert",
+			"non",
+			"handleNewPeers",
+			"typeo",
+			"handle",
+			"photoList",
+			"oui",
+			"onGetAvailableDevices",
+			"geta",
+			"json",
+			"createGroup",
+			"creategr",
+			"photoList",
+			".map",
+			"map",
+			"FlatList",
+			"devices",
+			".map",
+			"+",
+			"connectToDevice",
+			"name",
+			"connectToFirstDevice",
+			".map",
+			"map.",
+			"map",
+			"container",
+			"ScrollView",
+			"  ScrollView",
+			"onStartInvestigate",
+			"onGetAvailableDevices"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "components/motion.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 22434,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10833,
+								10833
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6928.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "App.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 627,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								627,
+								627
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/D/dev/app/BTControl/App.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1126,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								40,
+								40
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/dev/app/BTControl/App - Copie.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 9190,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "components/canvas.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1247969,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								104933,
+								104933
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4246.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "components/location.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 43971,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								22510,
+								22510
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 12022.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "components/controls.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 42473,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								41983,
+								41983
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 26584.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 7,
+					"file": "/D/dev/app/BTControl/android/app/src/main/AndroidManifest.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1022,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								826,
+								826
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/XML/XML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "android/app/src/main/AndroidManifest.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2092,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1905,
+								1944
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/XML/XML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 594.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "components/googleAPIKEY.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 72,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								72,
+								72
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/D/dev/app/p2p/android/settings.gradle",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 41,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								41,
+								41
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Groovy/Groovy.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/D/dev/app/BTControl/android/build.gradle",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1039,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								907,
+								907
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Groovy/Groovy.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/D/dev/app/BTControl/android/app/src/main/java/com/btcontrol/MainApplication.java",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1452,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1168,
+								1168
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Java/Java.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 29.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "android/app/src/main/res/values/styles.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								769,
+								784
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/XML/XML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/D/dev/app/cmd.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4689,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								156,
+								113
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 80.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7639,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2516,
+								2537
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Initialization",
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 378.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.57285546416,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 88.0
+	},
+	"pinned_build_system": "",
+	"project": "sol.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"manifest.xm",
+				"android\\app\\src\\main\\AndroidManifest.xml"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 363.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
